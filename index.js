@@ -52,7 +52,16 @@ var menu = document.getElementById("menu");
 menu.onclick = function() {
     menu.classList.toggle("openmenu");
 }
-
+document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+    link.addEventListener('click', function () {
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        if (navbarToggler && navbarCollapse.classList.contains('show')) {
+            navbarToggler.click();
+        }
+        menu.classList.toggle("openmenu");
+    });
+});
 let progressBars= document.querySelectorAll(".num");
 progressBars.forEach((value) => {
     let progress=value.parentElement;
@@ -67,6 +76,7 @@ progressBars.forEach((value) => {
         }
     }, 100)
 })
+
 
 let circularProgressBars = document.querySelectorAll(".prg-val");
 circularProgressBars.forEach((value)=>{
