@@ -2,9 +2,7 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
             entry.target.classList.add("show-items");
-            if (entry.target.classList.contains("scroll-open")) {
-                loadBars();
-            }
+
         } else {
             entry.target.classList.remove("show-items");
         }
@@ -54,7 +52,6 @@ var menu = document.getElementById("menu");
 menu.onclick = function() {
     menu.classList.toggle("openmenu");
 }
-
 document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
     link.addEventListener('click', function () {
         const navbarToggler = document.querySelector('.navbar-toggler');
@@ -65,9 +62,6 @@ document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
         menu.classList.toggle("openmenu");
     });
 });
-
-function loadBars(){
-
 let progressBars= document.querySelectorAll(".num");
 progressBars.forEach((value) => {
     let progress=value.parentElement;
@@ -98,4 +92,3 @@ circularProgressBars.forEach((value)=>{
         }
     },100)
 })
-}
