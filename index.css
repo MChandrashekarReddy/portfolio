@@ -13,6 +13,7 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     animation: full ease-in forwards;
+    overflow:scroll;
 }
 
 body::-webkit-scrollbar {
