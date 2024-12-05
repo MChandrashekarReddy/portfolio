@@ -2,7 +2,9 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
             entry.target.classList.add("show-items");
-
+            if (entry.target.classList.contains("scroll-open")) {
+                loadBars();
+            }
         } else {
             entry.target.classList.remove("show-items");
         }
@@ -64,6 +66,8 @@ document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
     });
 });
 
+function loadBars(){
+
 let progressBars= document.querySelectorAll(".num");
 progressBars.forEach((value) => {
     let progress=value.parentElement;
@@ -94,3 +98,4 @@ circularProgressBars.forEach((value)=>{
         }
     },100)
 })
+}
