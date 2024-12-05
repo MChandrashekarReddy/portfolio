@@ -511,6 +511,10 @@ i:hover {
 #footer{
     background-color: #07323fd1;
     color: white;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 @keyframes border {
     0% {
@@ -607,7 +611,12 @@ i:hover {
     top: 35%;
     width: 350px;
 }
-
+@media screen and (max-width:410px) {
+    #footer{
+        display: flex;
+        flex-direction: column;
+    }
+}
 @media screen and (max-width:768px) {
     .w {
         width: 100%;
