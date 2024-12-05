@@ -92,5 +92,96 @@ circularProgressBars.forEach((value)=>{
         }
     },100)
 })
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault(); 
+    const formData = new FormData(this);
+    const validationResult = isValidForm(formData);
 
+    if (!validationResult.isValid) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Error',
+            text: validationResult.errorMessage,
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
 
+    fetch('https://formspree.io/f/mgveqedv', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())  
+    .then(data => {
+        if (data.ok) {
+            document.getElementById('contact-form').reset();
+            Swal.fire({
+                icon: 'success',
+                title: 'Thank you!',
+                text: 'Your message has been sent successfully.',
+                confirmButtonText: 'OK'
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'There was an issue with your submission. Please try again.',
+                confirmButtonText: 'OK'
+            });
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'There was an error submitting the form. Please try again.',
+            confirmButtonText: 'OK'
+        });
+    });
+});
+
+function isValidForm(formData) {
+    const validations = [
+        {
+            field: 'name',
+            value: formData.get('name'),
+            pattern: /^[A-Za-z]+(?: [A-Za-z]+)*$/,
+            errorMessage: 'Name should contain only letters and spaces.'
+        },
+        {
+            field: 'email',
+            value: formData.get('email'),
+            pattern: /^[a-z]+[a-z0-9-]*(?:\.[a-z0-9-]+)*[a-z0-9-]*@[a-z]+(?:\.[a-z]+)*\.(com|org|net|edu|gov|co|io|ai|info)$/,
+            errorMessage: 'Please enter a valid email address.'
+        },
+        {
+            field: 'phone',
+            value: formData.get('phone'),
+            pattern: /^[6789]\d{9}$/,
+            errorMessage: 'Please enter a valid phone number.'
+        },
+        {
+            field: 'subject',
+            value: formData.get('subject'),
+            pattern: /^[A-Za-z]+(?: [A-Za-z]+)*$/,
+            errorMessage: 'Subject should contain only letters and spaces.'
+        },
+        {
+            field: 'message',
+            value: formData.get('message'),
+            pattern: /.{1,}/,  
+            errorMessage: 'Please enter a message.'
+        }
+    ];
+
+    for (const validation of validations) {
+        if (!validation.value || !validation.pattern.test(validation.value)) {
+            return { isValid: false, errorMessage: validation.errorMessage };
+        }
+    }
+
+    return { isValid: true };
+}
