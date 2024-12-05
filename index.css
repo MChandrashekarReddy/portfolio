@@ -508,7 +508,10 @@ i:hover {
 
 }
 
-
+#footer{
+    background-color: #07323fd1;
+    color: white;
+}
 @keyframes border {
     0% {
         transform: 0;
