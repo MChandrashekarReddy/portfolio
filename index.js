@@ -52,6 +52,7 @@ var menu = document.getElementById("menu");
 menu.onclick = function() {
     menu.classList.toggle("openmenu");
 }
+
 document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
     link.addEventListener('click', function () {
         const navbarToggler = document.querySelector('.navbar-toggler');
@@ -62,6 +63,7 @@ document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
         menu.classList.toggle("openmenu");
     });
 });
+
 let progressBars= document.querySelectorAll(".num");
 progressBars.forEach((value) => {
     let progress=value.parentElement;

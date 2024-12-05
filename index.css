@@ -26,6 +26,9 @@ html,
 body {
     overflow-x: hidden;
 }
+:target {
+    scroll-margin-top: 100px;
+}
 #nav-bar{
     position: fixed;
     top: 0;
