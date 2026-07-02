@@ -2,6 +2,7 @@ import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { Reveal } from "@/components/ui/Reveal";
+import { withBasePath } from "@/lib/basePath";
 import { endorsements } from "@/lib/data";
 
 export function Endorsements() {
@@ -35,7 +36,7 @@ export function Endorsements() {
               >
                 <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-border-custom">
                   <Image
-                    src={person.photo}
+                    src={withBasePath(person.photo)}
                     alt={person.name}
                     fill
                     sizes="48px"

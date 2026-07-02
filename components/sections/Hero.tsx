@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { TypewriterText } from "@/components/ui/TypewriterText";
 import { heroData } from "@/lib/data";
+import { withBasePath } from "@/lib/basePath";
 
 // Modern abstract glowing splash behind the image
 const SplashBehind = () => (
@@ -42,7 +43,7 @@ export function Hero() {
               }}
             >
               <Image
-                src="/profile.jpg"
+                src={withBasePath("/profile.jpg")}
                 alt={heroData.name}
                 fill
                 sizes="(min-width: 1280px) 480px, (min-width: 1024px) 420px, (min-width: 768px) 384px, (min-width: 640px) 320px, 288px"
