@@ -22,11 +22,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
-    const stored = localStorage.getItem("portfolio-theme") as Theme | null;
+    const stored = sessionStorage.getItem("portfolio-theme") as Theme | null;
     if (stored) {
       setTheme(stored);
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setTheme("dark");
     }
   }, []);
 
@@ -38,7 +36,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } else {
       root.classList.remove("dark");
     }
-    localStorage.setItem("portfolio-theme", theme);
+    sessionStorage.setItem("portfolio-theme", theme);
   }, [theme, mounted]);
 
   const toggleTheme = () => {
