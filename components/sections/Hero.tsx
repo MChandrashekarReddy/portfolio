@@ -1,16 +1,29 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { Button } from "@/components/ui/Button";
 import { TypewriterText } from "@/components/ui/TypewriterText";
 import { heroData } from "@/lib/data";
 import { withBasePath } from "@/lib/basePath";
 
-// Modern abstract glowing splash behind the image
+const depth = (x: number, y: number) =>
+  ({ "--depth-x": `${x}px`, "--depth-y": `${y}px` } as CSSProperties);
+
+// Modern abstract glowing splash behind the image — each orb sits on its own
+// depth plane and drifts against the pointer (driven by Tilt3D via --px/--py)
 const SplashBehind = () => (
   <div className="absolute inset-0 w-full h-full -z-10 flex items-center justify-center">
-    {/* Animated glowing orbs acting as a dynamic abstract back-splash */}
-    <div className="absolute -top-16 -right-16 w-80 h-80 bg-primary/40 rounded-full blur-[70px] animate-pulse" />
-    <div className="absolute -bottom-16 -left-16 w-96 h-96 bg-emerald-500/20 rounded-full blur-[90px] animate-pulse" style={{ animationDuration: "4s" }} />
-    <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-secondary/30 rounded-full blur-[60px] animate-pulse" style={{ animationDuration: "5s" }} />
+    <div
+      className="hero-layer absolute -top-16 -right-16 w-80 h-80 bg-primary/40 rounded-full blur-[70px] animate-pulse"
+      style={depth(34, 24)}
+    />
+    <div
+      className="hero-layer absolute -bottom-16 -left-16 w-96 h-96 bg-emerald-500/20 rounded-full blur-[90px] animate-pulse"
+      style={{ animationDuration: "4s", ...depth(-26, -18) }}
+    />
+    <div
+      className="hero-layer absolute top-1/3 left-1/4 w-64 h-64 bg-secondary/30 rounded-full blur-[60px] animate-pulse"
+      style={{ animationDuration: "5s", ...depth(18, 32) }}
+    />
   </div>
 );
 
@@ -19,6 +32,7 @@ export function Hero() {
     <section
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 pb-20 md:pb-28"
       id="hero"
+      data-parallax-scene
     >
       {/* Background effects */}
       <div className="absolute inset-0 hero-grid opacity-40" />
@@ -27,34 +41,41 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-8">
-        <div className="flex flex-col md:flex-row items-center justify-center gap-10 lg:gap-16">
+        <div className="hero-scene flex flex-col md:flex-row items-center justify-center gap-10 lg:gap-16">
 
           {/* Profile Image Container (Left) */}
           <div className="w-72 sm:w-80 md:w-96 lg:w-105 xl:w-120 shrink-0 animate-fade-in-up relative group flex items-center justify-center">
             {/* Splash Background Behind Image */}
             <SplashBehind />
 
-            {/* Image Wrapper - feathered so the photo blends into the background, no border/shadow */}
+            {/* Background-free person cutout; the bottom fade blends the torso crop
+                into the page. Tilts toward the pointer on its own depth plane (CSS 3D) */}
             <div
-              className="relative aspect-square w-full z-10 transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              data-tilt
+              className="relative aspect-square w-full z-10"
               style={{
-                maskImage: "radial-gradient(circle, black 55%, transparent 78%)",
-                WebkitMaskImage: "radial-gradient(circle, black 55%, transparent 78%)",
+                maskImage: "linear-gradient(to bottom, black 80%, transparent 99%)",
+                WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent 99%)",
               }}
             >
               <Image
-                src={withBasePath("/profile.jpg")}
+                src={withBasePath("/profile-cutout.webp")}
                 alt={heroData.name}
                 fill
                 sizes="(min-width: 1280px) 480px, (min-width: 1024px) 420px, (min-width: 768px) 384px, (min-width: 640px) 320px, 288px"
                 className="object-cover"
+                style={{ filter: "drop-shadow(0 24px 36px rgba(0, 0, 0, 0.28))" }}
                 priority
               />
             </div>
+
           </div>
 
-          {/* Text Content (Right) */}
-          <div className="flex-1 text-center md:text-left flex flex-col items-center md:items-start max-w-2xl">
+          {/* Text Content (Right) — drifts gently on its own depth plane */}
+          <div
+            className="hero-layer flex-1 text-center md:text-left flex flex-col items-center md:items-start max-w-2xl"
+            style={depth(-12, -8)}
+          >
             {/* Status badge */}
             <div className="animate-fade-in-up mb-6">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-full bg-primary-light text-primary border border-primary/20 shadow-sm">
@@ -72,7 +93,7 @@ export function Hero() {
 
             {/* Title */}
             <div className="animate-fade-in-up-delay-2 mt-4 h-8 md:h-10 flex items-center">
-              <TypewriterText 
+              <TypewriterText
                 lines={[
                   "AI Full-Stack Developer",
                   "AWS Cloud Infrastructure Builder",

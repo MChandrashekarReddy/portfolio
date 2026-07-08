@@ -2,13 +2,28 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+export type RevealVariant = "rise" | "flip" | "left" | "right" | "zoom";
+
 interface RevealProps {
   children: ReactNode;
   className?: string;
   delay?: number;
+  /** 3D entrance: rise (tilt up), flip (swing up from below), left/right (swing in), zoom (from depth) */
+  variant?: RevealVariant;
 }
 
-export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
+/**
+ * Scroll-triggered 3D entrance. Elements start tilted back / swung away in
+ * perspective and settle flat once they enter the viewport.
+ * Hidden/visible states live in globals.css (.rv3-*) so reduced-motion can
+ * neutralize them globally.
+ */
+export function Reveal({
+  children,
+  className = "",
+  delay = 0,
+  variant = "rise",
+}: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -33,9 +48,7 @@ export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ease-out will-change-transform ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      } ${className}`}
+      className={`rv3 rv3-${variant} ${isVisible ? "rv3-in" : ""} ${className}`}
       style={{ transitionDelay: isVisible ? `${delay}ms` : "0ms" }}
     >
       {children}

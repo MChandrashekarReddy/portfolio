@@ -28,7 +28,7 @@ export function SectionHeading({
         </p>
       )}
       <div
-        className={`mt-6 h-1 w-12 rounded-full bg-primary ${
+        className={`section-accent mt-6 h-1 w-12 rounded-full bg-primary ${
           align === "center" ? "mx-auto" : ""
         }`}
       />

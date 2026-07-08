@@ -22,10 +22,10 @@ export function Card({
 
   return (
     <div
-      className={`bg-surface border border-border-custom rounded-2xl ${paddings[padding]} shadow-sm ${
+      className={`ui-card bg-surface border border-border-custom rounded-2xl ${paddings[padding]} ${
         hover ? "card-hover" : ""
       } ${className}`}
-      style={{ borderRadius: "var(--radius-lg)" }}
+      style={{ borderRadius: "var(--radius-lg)", boxShadow: "var(--shadow)" }}
       {...rest}
     >
       {children}

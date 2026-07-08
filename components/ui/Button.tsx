@@ -22,11 +22,11 @@ export function Button({
 
   const variants = {
     primary:
-      "bg-primary text-white hover:bg-primary-hover shadow-sm hover:shadow-md active:scale-[0.98]",
+      "ui-btn ui-btn-primary bg-primary text-white hover:bg-primary-hover active:scale-[0.98]",
     secondary:
-      "border border-border-custom text-text-primary hover:border-primary hover:text-primary bg-transparent active:scale-[0.98]",
+      "ui-btn ui-btn-secondary border border-border-custom text-text-primary hover:border-primary hover:text-primary bg-transparent active:scale-[0.98]",
     ghost:
-      "text-text-secondary hover:text-text-primary hover:bg-primary-light",
+      "ui-btn ui-btn-ghost text-text-secondary hover:text-text-primary hover:bg-primary-light",
   };
 
   const sizes = {

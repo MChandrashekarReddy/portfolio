@@ -22,7 +22,7 @@ export function Badge({
 
     return (
       <span
-        className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-medium rounded-full ${statusColors[statusColor]} ${className}`}
+        className={`ui-badge ui-badge-status inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-medium rounded-full ${statusColors[statusColor]} ${className}`}
       >
         <span className="w-1.5 h-1.5 rounded-full bg-current" />
         {children}
@@ -32,7 +32,7 @@ export function Badge({
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-lg bg-badge-bg text-badge-text transition-colors duration-200 ${className}`}
+      className={`ui-badge ui-badge-default inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-lg bg-badge-bg text-badge-text transition-colors duration-200 ${className}`}
     >
       {children}
     </span>

@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
+import { StyleSwitcher } from "@/components/ui/StyleSwitcher";
+import { Tilt3D } from "@/components/ui/Tilt3D";
+import { WorldCanvas } from "@/components/worlds/WorldCanvas";
+import { CursorFX } from "@/components/worlds/CursorFX";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -50,8 +54,12 @@ export default function RootLayout({
     >
       <body className="min-h-screen flex flex-col antialiased" suppressHydrationWarning>
         <ThemeProvider>
+          <WorldCanvas />
           {children}
           <ScrollToTop />
+          <StyleSwitcher />
+          <Tilt3D />
+          <CursorFX />
         </ThemeProvider>
       </body>
     </html>

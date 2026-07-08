@@ -18,7 +18,7 @@ export function Projects() {
           />
         </Reveal>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="cards-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, i) => {
             const openLive = () => {
               if (project.liveUrl) {
@@ -27,7 +27,7 @@ export function Projects() {
             };
 
             return (
-              <Reveal key={project.id} delay={i * 80} className="h-full">
+              <Reveal key={project.id} variant="flip" delay={i * 90} className="h-full">
               <Card
                 className={`h-full flex flex-col group ${project.liveUrl ? "cursor-pointer" : ""}`}
                 role={project.liveUrl ? "link" : undefined}
