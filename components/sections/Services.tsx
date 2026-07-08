@@ -32,9 +32,14 @@ export function Services() {
           />
         </Reveal>
 
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div className="cards-grid grid sm:grid-cols-2 gap-6">
           {services.map((service, i) => (
-            <Reveal key={service.id} delay={i * 80} className="h-full">
+            <Reveal
+              key={service.id}
+              variant={i % 2 === 0 ? "left" : "right"}
+              delay={i * 80}
+              className="h-full"
+            >
               <Card className="h-full flex flex-col">
                 <ServiceIcon icon={service.icon} />
 

@@ -30,6 +30,13 @@
   --gradient-mid: #6366F1;
   --code-bg: #F3F4F6;
   --hero-glow: rgba(79, 70, 229, 0.12);
+  /* 3D depth system — tilt strength & hover lift, overridden per style below */
+  --tilt: 0.55;
+  --hover-x: 0px;
+  --hover-y: -4px;
+  --hover-z: 22px;
+  --hover-scale: 1.005;
+  --hover-shadow: var(--shadow-lg);
   color-scheme: light;
 }
 
@@ -93,6 +100,9 @@ html {
 }
 
 body {
+  /* clip, not hidden: decorative 3D transforms may overhang the viewport
+     without creating a horizontal scrollbar or breaking sticky elements */
+  overflow-x: clip;
   background-color: var(--background);
   color: var(--text-primary);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
@@ -131,15 +141,14 @@ p {
 .card-hover {
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
+/* lift/tilt transform comes from the 3D depth system below */
 .card-hover:hover {
-  transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
   border-color: var(--border-hover);
 }
 
 .glass {
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 /* Hero dot grid background */
@@ -231,11 +240,11 @@ select:focus-visible {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: perspective(900px) translateY(26px) rotateX(7deg);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -274,4 +283,1558 @@ select:focus-visible {
 
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* ========================================================
+   STYLE SYSTEM — 10 design variants + "modern" (default/current)
+   Selected via <html data-style="...">, set by StyleSwitcher.
+   Each block only overrides tokens/treatments layered on top
+   of the existing light/dark palette above.
+   ======================================================== */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ---------- 1. Skeuomorphism ---------- */
+[data-style="skeuomorphism"] {
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.7), 0 3px 6px rgba(60, 45, 20, 0.18);
+  --shadow-md: 0 1px 0 rgba(255, 255, 255, 0.7), 0 8px 16px rgba(60, 45, 20, 0.22);
+  --shadow-lg: 0 1px 0 rgba(255, 255, 255, 0.7), 0 16px 28px rgba(60, 45, 20, 0.28);
+  --background: #efe7d6;
+  --hero-glow: rgba(139, 111, 41, 0.1);
+}
+[data-style="skeuomorphism"].dark {
+  --background: #1a140c;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.06), 0 3px 6px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 1px 0 rgba(255, 255, 255, 0.06), 0 8px 16px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 1px 0 rgba(255, 255, 255, 0.06), 0 16px 28px rgba(0, 0, 0, 0.6);
+  --hero-glow: rgba(191, 155, 74, 0.12);
+}
+[data-style="skeuomorphism"] body::before {
+  background: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.015) 0 2px, transparent 2px 4px);
+}
+[data-style="skeuomorphism"] .ui-card {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, #fff) 0%, var(--surface) 100%);
+  border: 1px solid var(--border);
+  border-top-color: color-mix(in srgb, var(--surface) 50%, #fff);
+}
+[data-style="skeuomorphism"] .ui-btn-primary {
+  background: linear-gradient(180deg, var(--primary-hover) 0%, var(--primary) 55%, color-mix(in srgb, var(--primary) 70%, #000) 100%);
+  border: 1px solid color-mix(in srgb, var(--primary) 60%, #000);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
+}
+[data-style="skeuomorphism"] .ui-btn-primary:active {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  transform: translateY(1px);
+}
+[data-style="skeuomorphism"] .ui-btn-secondary {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, #fff), var(--surface));
+  box-shadow: var(--shadow);
+}
+[data-style="skeuomorphism"] #navbar {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--nav-bg) 90%, #fff), var(--nav-bg));
+  border-bottom: 1px solid var(--border);
+}
+
+/* ---------- 2. Neumorphism ---------- */
+[data-style="neumorphism"] {
+  --radius: 20px;
+  --radius-lg: 24px;
+  --background: #e4ebf5;
+  --surface: #e4ebf5;
+  --border: #d3dcec;
+  --shadow: 7px 7px 14px #bcc6d6, -7px -7px 14px #ffffff;
+  --shadow-md: 9px 9px 18px #bcc6d6, -9px -9px 18px #ffffff;
+  --shadow-lg: 11px 11px 22px #bcc6d6, -11px -11px 22px #ffffff;
+  --hero-glow: rgba(99, 102, 241, 0.08);
+  /* soft material: shallow tilt, gentle lift */
+  --tilt: 0.35;
+  --hover-y: -2px;
+  --hover-z: 10px;
+  --hover-scale: 1;
+}
+[data-style="neumorphism"].dark {
+  --background: #232838;
+  --surface: #232838;
+  --border: #2c3245;
+  --shadow: 7px 7px 14px #171b27, -7px -7px 14px #2f3649;
+  --shadow-md: 9px 9px 18px #171b27, -9px -9px 18px #2f3649;
+  --shadow-lg: 11px 11px 22px #171b27, -11px -11px 22px #2f3649;
+}
+[data-style="neumorphism"] .hero-glow,
+[data-style="neumorphism"] .hero-grid { opacity: 0 !important; }
+[data-style="neumorphism"] .ui-card { border: none; }
+[data-style="neumorphism"] .ui-btn-primary {
+  background: var(--surface);
+  color: var(--primary);
+  box-shadow: var(--shadow);
+}
+[data-style="neumorphism"] .ui-btn-primary:hover { color: var(--primary-hover); }
+[data-style="neumorphism"] .ui-btn-primary:active,
+[data-style="neumorphism"] .ui-card:active {
+  box-shadow: inset 5px 5px 10px #bcc6d6, inset -5px -5px 10px #ffffff;
+}
+[data-style="neumorphism"].dark .ui-btn-primary:active,
+[data-style="neumorphism"].dark .ui-card:active {
+  box-shadow: inset 5px 5px 10px #171b27, inset -5px -5px 10px #2f3649;
+}
+[data-style="neumorphism"] .ui-btn-secondary { border: none; box-shadow: var(--shadow); }
+[data-style="neumorphism"] #navbar { border: none; box-shadow: 0 6px 14px -8px rgba(0,0,0,0.15); }
+
+/* ---------- 3. Glassmorphism ---------- */
+[data-style="glassmorphism"] {
+  --radius: 18px;
+  --radius-lg: 22px;
+}
+[data-style="glassmorphism"] body::before {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.35), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(236, 72, 153, 0.3), transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.3), transparent 45%),
+    var(--background);
+}
+[data-style="glassmorphism"] .ui-card {
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+  border: 1px solid color-mix(in srgb, #fff 35%, transparent);
+  backdrop-filter: blur(18px) saturate(160%);
+}
+[data-style="glassmorphism"] .ui-btn-primary {
+  background: color-mix(in srgb, var(--primary) 75%, transparent);
+  border: 1px solid color-mix(in srgb, #fff 30%, transparent);
+  backdrop-filter: blur(10px);
+}
+[data-style="glassmorphism"] .ui-btn-secondary {
+  background: color-mix(in srgb, var(--surface) 40%, transparent);
+  backdrop-filter: blur(10px);
+}
+[data-style="glassmorphism"] #navbar {
+  background: color-mix(in srgb, var(--nav-bg) 60%, transparent) !important;
+  backdrop-filter: blur(20px) saturate(160%);
+}
+
+/* ---------- 4. Claymorphism ---------- */
+[data-style="claymorphism"] {
+  --radius: 28px;
+  --radius-lg: 32px;
+  --hover-y: -3px;
+  --hover-z: 16px;
+  --hover-scale: 1.02;
+  --shadow: 8px 8px 18px rgba(150, 140, 210, 0.35), -6px -6px 14px rgba(255, 255, 255, 0.7), inset 0 -4px 10px rgba(0, 0, 0, 0.04);
+  --shadow-md: 10px 10px 22px rgba(150, 140, 210, 0.4), -6px -6px 14px rgba(255, 255, 255, 0.7);
+  --shadow-lg: 14px 14px 28px rgba(150, 140, 210, 0.45), -8px -8px 18px rgba(255, 255, 255, 0.75);
+  --background: #eef1ff;
+  --surface: #f4f0ff;
+  --border: transparent;
+}
+[data-style="claymorphism"].dark {
+  --background: #211f38;
+  --surface: #2a2748;
+  --shadow: 8px 8px 18px rgba(0, 0, 0, 0.45), -6px -6px 14px rgba(255, 255, 255, 0.05), inset 0 -4px 10px rgba(0, 0, 0, 0.15);
+  --shadow-md: 10px 10px 22px rgba(0, 0, 0, 0.5), -6px -6px 14px rgba(255, 255, 255, 0.05);
+  --shadow-lg: 14px 14px 28px rgba(0, 0, 0, 0.55), -8px -8px 18px rgba(255, 255, 255, 0.06);
+}
+[data-style="claymorphism"] .ui-card { border: none; }
+[data-style="claymorphism"] .ui-btn-primary,
+[data-style="claymorphism"] .ui-btn-secondary {
+  border: none;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius-lg) !important;
+}
+[data-style="claymorphism"] .ui-btn-primary:active { transform: translateY(2px); box-shadow: var(--shadow-md); }
+[data-style="claymorphism"] .ui-badge-default { border-radius: 999px !important; }
+[data-style="claymorphism"] #navbar { border: none; box-shadow: var(--shadow); }
+
+/* ---------- 5. Minimalism ---------- */
+[data-style="minimalism"] {
+  --radius: 4px;
+  --radius-lg: 4px;
+  --shadow: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+}
+[data-style="minimalism"] .hero-glow,
+[data-style="minimalism"] .hero-grid,
+[data-style="minimalism"] .animate-pulse-glow { display: none !important; }
+[data-style="minimalism"] .gradient-text {
+  background: none;
+  -webkit-text-fill-color: var(--text-primary);
+  color: var(--text-primary);
+}
+[data-style="minimalism"] .ui-card {
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+[data-style="minimalism"] .card-hover:hover {
+  transform: none;
+  box-shadow: none;
+}
+[data-style="minimalism"] .ui-btn-primary,
+[data-style="minimalism"] .ui-btn-secondary { box-shadow: none; }
+[data-style="minimalism"] #navbar { backdrop-filter: none; }
+
+/* ---------- 6. Maximalism ---------- */
+[data-style="maximalism"] {
+  --radius: 20px;
+  --radius-lg: 26px;
+  /* hard offset-shadow look: shift toward the light, minimal depth pop */
+  --hover-x: -3px;
+  --hover-y: -3px;
+  --hover-z: 8px;
+  --hover-scale: 1;
+  --hover-shadow: 10px 10px 0 var(--secondary);
+}
+[data-style="maximalism"] body::before {
+  background:
+    radial-gradient(circle at 10% 10%, rgba(236, 72, 153, 0.28), transparent 40%),
+    radial-gradient(circle at 90% 25%, rgba(99, 102, 241, 0.3), transparent 40%),
+    radial-gradient(circle at 30% 90%, rgba(245, 158, 11, 0.25), transparent 40%),
+    radial-gradient(circle at 80% 85%, rgba(16, 185, 129, 0.25), transparent 40%),
+    var(--background);
+}
+[data-style="maximalism"] .ui-card {
+  border: 2px solid var(--primary);
+  box-shadow: 7px 7px 0 var(--secondary);
+}
+[data-style="maximalism"] .ui-btn-primary {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+  border: 2px solid color-mix(in srgb, var(--text-primary) 80%, transparent);
+  box-shadow: 4px 4px 0 var(--text-primary);
+}
+[data-style="maximalism"] .ui-btn-secondary { border-width: 2px; }
+[data-style="maximalism"] .ui-badge-default {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  color: #fff;
+}
+[data-style="maximalism"] #navbar { border-bottom: 2px solid var(--primary); }
+
+/* ---------- 7. Brutalism ---------- */
+[data-style="brutalism"] {
+  --radius: 0px;
+  --radius-lg: 0px;
+  --shadow: 5px 5px 0 var(--text-primary);
+  --shadow-md: 7px 7px 0 var(--text-primary);
+  --shadow-lg: 9px 9px 0 var(--text-primary);
+  --background: #f5f5f0;
+  --surface: #ffffff;
+  --border: #000000;
+}
+[data-style="brutalism"].dark {
+  --background: #000000;
+  --surface: #0a0a0a;
+  --border: #ffffff;
+  --shadow: 5px 5px 0 #ffffff;
+  --shadow-md: 7px 7px 0 #ffffff;
+  --shadow-lg: 9px 9px 0 #ffffff;
+}
+[data-style="brutalism"] .hero-glow,
+[data-style="brutalism"] .hero-grid { display: none !important; }
+[data-style="brutalism"] .gradient-text {
+  background: none;
+  -webkit-text-fill-color: var(--text-primary);
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 4px;
+  text-decoration-color: var(--primary);
+}
+[data-style="brutalism"] .ui-card { border: 3px solid var(--border); }
+[data-style="brutalism"] .card-hover:hover {
+  transform: translate(3px, 3px);
+  box-shadow: none !important;
+}
+[data-style="brutalism"] .ui-btn-primary,
+[data-style="brutalism"] .ui-btn-secondary {
+  border: 3px solid var(--border);
+  border-radius: 0 !important;
+}
+[data-style="brutalism"] .ui-btn-primary:active,
+[data-style="brutalism"] .ui-btn-secondary:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+[data-style="brutalism"] .ui-badge-default,
+[data-style="brutalism"] .ui-badge-status { border-radius: 0 !important; border: 2px solid var(--border); }
+[data-style="brutalism"] #navbar { border-bottom: 3px solid var(--border); backdrop-filter: none; }
+
+/* ---------- 8. Liquid Glass ---------- */
+[data-style="liquid-glass"] {
+  --radius: 24px;
+  --radius-lg: 28px;
+  --tilt: 0.7;
+  --hover-y: -6px;
+  --hover-z: 24px;
+  --hover-scale: 1.01;
+}
+[data-style="liquid-glass"] body::before {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.4), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(56, 189, 248, 0.35), transparent 40%),
+    radial-gradient(circle at 40% 80%, rgba(168, 85, 247, 0.35), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(236, 72, 153, 0.3), transparent 40%),
+    var(--background);
+  background-size: 200% 200%;
+  animation: liquidDrift 18s ease-in-out infinite;
+}
+@keyframes liquidDrift {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+}
+[data-style="liquid-glass"] .ui-card {
+  position: relative;
+  background: color-mix(in srgb, var(--surface) 45%, transparent);
+  border: 1px solid color-mix(in srgb, #fff 40%, transparent);
+  backdrop-filter: blur(24px) saturate(180%);
+  overflow: hidden;
+}
+[data-style="liquid-glass"] .ui-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.25), transparent 40%);
+  pointer-events: none;
+}
+[data-style="liquid-glass"] .ui-btn-primary {
+  background: color-mix(in srgb, var(--primary) 70%, transparent);
+  border: 1px solid color-mix(in srgb, #fff 35%, transparent);
+  backdrop-filter: blur(12px);
+}
+[data-style="liquid-glass"] #navbar {
+  background: color-mix(in srgb, var(--nav-bg) 55%, transparent) !important;
+  backdrop-filter: blur(26px) saturate(180%);
+}
+
+/* ---------- 9. Bento Grid ---------- */
+[data-style="bento-grid"] {
+  --radius: 22px;
+  --radius-lg: 26px;
+  --hover-y: 0px;
+  --hover-z: 18px;
+  --hover-scale: 1.02;
+  --hover-shadow: 0 18px 40px -12px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+[data-style="bento-grid"] .cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: 1.25rem;
+}
+[data-style="bento-grid"] .cards-grid > * { grid-column: span 4; }
+@media (min-width: 640px) {
+  [data-style="bento-grid"] .cards-grid > * { grid-column: span 2; }
+  [data-style="bento-grid"] .cards-grid > *:nth-child(3n+1) { grid-column: span 4; }
+}
+@media (min-width: 1024px) {
+  [data-style="bento-grid"] .cards-grid > * { grid-column: span 2; }
+  [data-style="bento-grid"] .cards-grid > *:nth-child(5n+1) { grid-column: span 4; }
+}
+[data-style="bento-grid"] .ui-card:nth-child(4n+1) { background: color-mix(in srgb, var(--primary) 8%, var(--surface)); }
+[data-style="bento-grid"] .ui-card:nth-child(4n+2) { background: color-mix(in srgb, var(--secondary) 8%, var(--surface)); }
+[data-style="bento-grid"] .ui-card:nth-child(4n+3) { background: color-mix(in srgb, #10b981 8%, var(--surface)); }
+
+/* ---------- 10. Spatial UI ---------- */
+/* strongest depth: full tilt + deep hover pop (rendered by the 3D depth system) */
+[data-style="spatial-ui"] {
+  --radius: 18px;
+  --radius-lg: 22px;
+  --tilt: 1;
+  --hover-y: 0px;
+  --hover-z: 40px;
+  --hover-scale: 1.02;
+  --hover-shadow: 0 45px 80px -25px rgba(0, 0, 0, 0.5);
+}
+[data-style="spatial-ui"] .cards-grid {
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+[data-style="spatial-ui"] .hero-glow { filter: blur(100px); }
+[data-style="spatial-ui"] #navbar {
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.35);
+}
+[data-style="spatial-ui"] body::before {
+  background:
+    radial-gradient(ellipse at 50% -20%, rgba(99, 102, 241, 0.18), transparent 55%),
+    radial-gradient(ellipse at 80% 110%, rgba(168, 85, 247, 0.14), transparent 55%);
+}
+
+/* ========================================================
+   ANIMATION & 3D ENHANCEMENT LAYER
+   Signature motion per style variant + crossfade on switch.
+   ======================================================== */
+
+/* Crossfade when the style changes (class retriggered by ThemeProvider) */
+html.style-anim body {
+  animation: styleFade 0.5s ease;
+}
+@keyframes styleFade {
+  from { opacity: 0.3; filter: saturate(0.5); }
+  to { opacity: 1; filter: saturate(1); }
+}
+
+/* Shared keyframes */
+@keyframes sheenSweep {
+  0% { background-position: 200% 0; }
+  60%, 100% { background-position: -100% 0; }
+}
+@keyframes hueDrift {
+  to { filter: hue-rotate(360deg); }
+}
+@keyframes rainbowShift {
+  to { background-position: 300% 0; }
+}
+@keyframes clayBounce {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.05, 0.93); }
+  65% { transform: scale(0.97, 1.04); }
+  100% { transform: scale(1.02) translateY(-2px); }
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes glitchStep {
+  0% { transform: translate(0); }
+  25% { transform: translate(-3px, 2px); }
+  50% { transform: translate(3px, -2px); }
+  75% { transform: translate(-2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+/* --- Skeuomorphism: embossed serif headings, stitched badges --- */
+[data-style="skeuomorphism"] h1,
+[data-style="skeuomorphism"] h2,
+[data-style="skeuomorphism"] h3,
+[data-style="skeuomorphism"] h4 {
+  font-family: Georgia, "Times New Roman", serif;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+[data-style="skeuomorphism"].dark h1,
+[data-style="skeuomorphism"].dark h2,
+[data-style="skeuomorphism"].dark h3,
+[data-style="skeuomorphism"].dark h4 {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.7), 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+[data-style="skeuomorphism"] .ui-badge-default {
+  border: 1px dashed color-mix(in srgb, var(--badge-text) 55%, transparent);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+[data-style="skeuomorphism"] .ui-card {
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+[data-style="skeuomorphism"].dark .ui-card {
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+[data-style="skeuomorphism"] .ui-btn-primary:hover { filter: brightness(1.08); }
+
+/* --- Neumorphism: breathing primary button, pressable cards --- */
+@keyframes neuBreathe {
+  0%, 100% { box-shadow: 7px 7px 14px #bcc6d6, -7px -7px 14px #ffffff; }
+  50% { box-shadow: 4px 4px 8px #bcc6d6, -4px -4px 8px #ffffff; }
+}
+@keyframes neuBreatheDark {
+  0%, 100% { box-shadow: 7px 7px 14px #171b27, -7px -7px 14px #2f3649; }
+  50% { box-shadow: 4px 4px 8px #171b27, -4px -4px 8px #2f3649; }
+}
+[data-style="neumorphism"] .ui-btn-primary {
+  animation: neuBreathe 3.5s ease-in-out infinite;
+}
+[data-style="neumorphism"].dark .ui-btn-primary {
+  animation: neuBreatheDark 3.5s ease-in-out infinite;
+}
+
+/* --- Glassmorphism: drifting hues + light sweep on card hover --- */
+[data-style="glassmorphism"] body::before {
+  animation: hueDrift 24s linear infinite;
+}
+[data-style="glassmorphism"] .ui-card {
+  position: relative;
+  overflow: hidden;
+}
+[data-style="glassmorphism"] .ui-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -80%;
+  width: 60%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.65s ease;
+  pointer-events: none;
+}
+[data-style="glassmorphism"] .ui-card:hover::after { left: 130%; }
+
+/* --- Claymorphism: springy squash on cards (composes with 3D tilt), bouncy buttons --- */
+[data-style="claymorphism"] .ui-card {
+  transition: transform 0.5s cubic-bezier(0.3, 1.6, 0.5, 1), box-shadow 0.35s ease;
+}
+[data-style="claymorphism"] .ui-btn-primary:hover,
+[data-style="claymorphism"] .ui-btn-secondary:hover {
+  animation: clayBounce 0.45s ease forwards;
+}
+
+/* --- Minimalism: restraint — a single underline sweep on headings --- */
+[data-style="minimalism"] h2 {
+  position: relative;
+  display: inline-block;
+}
+[data-style="minimalism"] h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 2px;
+  background: var(--text-primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+[data-style="minimalism"] h2:hover::after { transform: scaleX(1); }
+
+/* --- Maximalism: color-cycling shadows, rainbow text, drifting bg --- */
+@keyframes maxShadowCycle {
+  0%, 100% { box-shadow: 7px 7px 0 var(--secondary); border-color: var(--primary); }
+  33% { box-shadow: 7px 7px 0 #ec4899; border-color: #ec4899; }
+  66% { box-shadow: 7px 7px 0 #f59e0b; border-color: #f59e0b; }
+}
+[data-style="maximalism"] body::before {
+  animation: hueDrift 30s linear infinite;
+}
+[data-style="maximalism"] .ui-card {
+  animation: maxShadowCycle 8s ease-in-out infinite;
+}
+[data-style="maximalism"] .gradient-text {
+  background: linear-gradient(90deg, #6366f1, #ec4899, #f59e0b, #10b981, #6366f1);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowShift 5s linear infinite;
+}
+
+/* --- Brutalism: mono type, uppercase, zero easing, glitch on hover --- */
+[data-style="brutalism"] body {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+[data-style="brutalism"] h1,
+[data-style="brutalism"] h2,
+[data-style="brutalism"] h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+[data-style="brutalism"] *,
+[data-style="brutalism"] *::before,
+[data-style="brutalism"] *::after {
+  transition-duration: 0s !important;
+}
+[data-style="brutalism"] h1:hover,
+[data-style="brutalism"] h2:hover {
+  animation: glitchStep 0.3s steps(2) infinite;
+  /* glitch replaces the fadeInUp entrance animation and its forwards fill;
+     without this the delay classes' base opacity: 0 would show through */
+  opacity: 1;
+}
+[data-style="brutalism"] .ui-btn-primary:hover {
+  background: var(--text-primary);
+  color: var(--background);
+}
+
+/* --- Liquid Glass: perpetual specular sheen + springy buttons --- */
+[data-style="liquid-glass"] .ui-card::before {
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+  background-size: 250% 250%;
+  animation: sheenSweep 7s ease-in-out infinite;
+}
+[data-style="liquid-glass"] .ui-btn-primary,
+[data-style="liquid-glass"] .ui-btn-secondary {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
+}
+[data-style="liquid-glass"] .ui-btn-primary:hover,
+[data-style="liquid-glass"] .ui-btn-secondary:hover {
+  transform: scale(1.06);
+}
+
+/* --- Bento Grid: staggered pop-in, glow lift on hover --- */
+[data-style="bento-grid"] .ui-card {
+  animation: popIn 0.5s ease backwards;
+}
+[data-style="bento-grid"] .cards-grid > *:nth-child(1) .ui-card { animation-delay: 0.05s; }
+[data-style="bento-grid"] .cards-grid > *:nth-child(2) .ui-card { animation-delay: 0.12s; }
+[data-style="bento-grid"] .cards-grid > *:nth-child(3) .ui-card { animation-delay: 0.19s; }
+[data-style="bento-grid"] .cards-grid > *:nth-child(4) .ui-card { animation-delay: 0.26s; }
+[data-style="bento-grid"] .cards-grid > *:nth-child(5) .ui-card { animation-delay: 0.33s; }
+[data-style="bento-grid"] .cards-grid > *:nth-child(6) .ui-card { animation-delay: 0.4s; }
+
+/* ---------- 11. Aurora Borealis (world) ----------
+   Real northern-lights photography behind the page. The UI reads as
+   frosted arctic glass — cold teals and ice violets glowing over the
+   polar night, day (twilight) or dark (deep night). */
+[data-style="aurora"] {
+  --background: #060b16;
+  --surface: rgba(13, 24, 38, 0.78);
+  --text-primary: #eaf4ff;
+  --text-secondary: #9fb8d0;
+  --primary: #5eead4;
+  --primary-hover: #8cf5e3;
+  --primary-light: rgba(94, 234, 212, 0.13);
+  --secondary: #a78bfa;
+  --border: rgba(94, 148, 190, 0.35);
+  --border-hover: rgba(140, 200, 235, 0.6);
+  --nav-bg: rgba(6, 11, 22, 0.72);
+  --badge-bg: rgba(94, 234, 212, 0.12);
+  --badge-text: #99f0de;
+  --gradient-start: #5eead4;
+  --gradient-mid: #60a5fa;
+  --gradient-end: #a78bfa;
+  --code-bg: rgba(10, 18, 30, 0.9);
+  --hero-glow: rgba(94, 234, 212, 0.14);
+  --shadow: 0 3px 10px rgba(2, 6, 12, 0.5);
+  --shadow-md: 0 8px 20px rgba(2, 6, 12, 0.55);
+  --shadow-lg: 0 16px 38px rgba(2, 6, 12, 0.65);
+  --radius: 14px;
+  --radius-lg: 20px;
+  /* icy glide: pronounced tilt, teal glow on lift */
+  --tilt: 0.55;
+  --hover-y: -5px;
+  --hover-z: 16px;
+  --hover-shadow: 0 18px 40px -10px rgba(0, 0, 0, 0.7), 0 0 28px rgba(94, 234, 212, 0.16);
+  color-scheme: dark;
+}
+
+/* readability vignette over the bright lights */
+[data-style="aurora"] body::before {
+  background:
+    radial-gradient(ellipse 130% 95% at 50% 45%, transparent 50%, rgba(2, 5, 10, 0.55) 100%),
+    linear-gradient(180deg, rgba(3, 7, 14, 0.18), rgba(2, 5, 10, 0.42));
+}
+[data-style="aurora"] h1,
+[data-style="aurora"] h2,
+[data-style="aurora"] h3 {
+  text-shadow: 0 2px 18px rgba(2, 6, 12, 0.7);
+}
+[data-style="aurora"] p {
+  text-shadow: 0 1px 8px rgba(2, 6, 12, 0.55);
+}
+/* cards: panes of frosted arctic glass */
+[data-style="aurora"] .ui-card {
+  background: linear-gradient(160deg, rgba(16, 30, 48, 0.82), rgba(9, 18, 32, 0.86));
+  border: 1px solid rgba(126, 180, 220, 0.22);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(190, 230, 255, 0.1), var(--shadow-md);
+}
+[data-style="aurora"] .ui-card:hover {
+  border-color: rgba(140, 210, 200, 0.45);
+}
+/* buttons: bottled aurora light */
+[data-style="aurora"] .ui-btn-primary {
+  background: linear-gradient(135deg, #34d399, #38bdf8);
+  color: #04121a;
+  border: none;
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.35);
+}
+[data-style="aurora"] .ui-btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 8px 24px rgba(94, 234, 212, 0.45);
+}
+[data-style="aurora"] .ui-btn-secondary {
+  background: rgba(13, 26, 42, 0.75);
+  border: 1px solid rgba(126, 180, 220, 0.35);
+  color: #d9ecff;
+}
+[data-style="aurora"] #navbar {
+  background: linear-gradient(180deg, rgba(6, 12, 24, 0.85), rgba(4, 9, 18, 0.7)) !important;
+  border-bottom: 1px solid rgba(94, 148, 190, 0.25);
+  backdrop-filter: blur(10px);
+}
+[data-style="aurora"] .ui-field {
+  background: rgba(8, 16, 28, 0.8);
+  border: 1px solid var(--border);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+[data-style="aurora"] .section-accent {
+  width: 4.5rem;
+  height: 0.3rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #34d399, #38bdf8 55%, #a78bfa);
+  box-shadow: 0 0 14px rgba(94, 234, 212, 0.4);
+}
+[data-style="aurora"] .ui-badge-default {
+  border: 1px solid rgba(94, 234, 212, 0.25);
+}
+
+/* ========================================================
+   WORLD THEMES — immersive styles backed by live canvas
+   environments (components/worlds/). Each world block owns
+   both light & dark since some worlds dictate their own
+   time of day (space is always night, library day/night).
+   ======================================================== */
+
+/* Environment canvas sits behind the body::before veil (z -1),
+   which each world uses for readability vignettes/scanlines. */
+.world-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+.world-canvas[data-ready] {
+  opacity: 1;
+}
+.cursor-fx {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 45;
+  pointer-events: none;
+}
+
+/* The environment replaces the decorative dot grid in every world */
+[data-style="space"] .hero-grid,
+[data-style="cyberpunk"] .hero-grid,
+[data-style="ocean"] .hero-grid,
+[data-style="library"] .hero-grid,
+[data-style="sakura"] .hero-grid,
+[data-style="aurora"] .hero-grid,
+[data-style="terminal"] .hero-grid,
+[data-style="wildwood"] .hero-grid {
+  display: none !important;
+}
+/* photographic worlds replace the flat hero glows too */
+[data-style="wildwood"] .hero-glow,
+[data-style="aurora"] .hero-glow,
+[data-style="sakura"] .hero-glow {
+  display: none !important;
+}
+/* ---------- 12. Space (world) ---------- */
+[data-style="space"] {
+  --background: #05010f;
+  --surface: rgba(17, 12, 43, 0.62);
+  --text-primary: #ede9fe;
+  --text-secondary: #a5b4fc;
+  --primary: #a78bfa;
+  --primary-hover: #c4b5fd;
+  --primary-light: rgba(167, 139, 250, 0.14);
+  --secondary: #60a5fa;
+  --border: rgba(167, 139, 250, 0.25);
+  --border-hover: rgba(196, 181, 253, 0.5);
+  --nav-bg: rgba(5, 1, 15, 0.6);
+  --badge-bg: rgba(96, 165, 250, 0.14);
+  --badge-text: #93c5fd;
+  --gradient-start: #c4b5fd;
+  --gradient-mid: #a78bfa;
+  --gradient-end: #60a5fa;
+  --code-bg: rgba(30, 27, 75, 0.8);
+  --hero-glow: rgba(139, 92, 246, 0.18);
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.7);
+  --radius: 16px;
+  --radius-lg: 20px;
+  --tilt: 0.8;
+  --hover-z: 30px;
+  --hover-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.8), 0 0 32px rgba(139, 92, 246, 0.25);
+  color-scheme: dark;
+}
+[data-style="space"] body::before {
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 0%, rgba(88, 28, 135, 0.16), transparent 60%),
+    linear-gradient(180deg, rgba(5, 1, 15, 0.2), rgba(5, 1, 15, 0.5));
+}
+[data-style="space"] .ui-card {
+  backdrop-filter: blur(14px) saturate(130%);
+}
+[data-style="space"] #navbar {
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+[data-style="space"] .ui-field {
+  background: rgba(17, 12, 43, 0.55);
+  border: 1px solid var(--border);
+}
+
+/* ---------- 13. Cyberpunk (world) ---------- */
+[data-style="cyberpunk"] {
+  --background: #07020d;
+  --surface: rgba(20, 8, 30, 0.7);
+  --text-primary: #f5e9ff;
+  --text-secondary: #b3a5cc;
+  --primary: #ff2ec4;
+  --primary-hover: #ff5fd3;
+  --primary-light: rgba(255, 46, 196, 0.14);
+  --secondary: #00e5ff;
+  --border: rgba(0, 229, 255, 0.28);
+  --border-hover: rgba(0, 229, 255, 0.6);
+  --nav-bg: rgba(7, 2, 13, 0.65);
+  --badge-bg: rgba(0, 229, 255, 0.12);
+  --badge-text: #7df3ff;
+  --gradient-start: #ff2ec4;
+  --gradient-mid: #a855f7;
+  --gradient-end: #00e5ff;
+  --code-bg: #150a20;
+  --hero-glow: rgba(255, 46, 196, 0.15);
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.65);
+  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.75);
+  --radius: 10px;
+  --radius-lg: 14px;
+  --tilt: 0.7;
+  --hover-z: 26px;
+  --hover-shadow: 0 0 22px rgba(255, 46, 196, 0.35), 0 0 44px rgba(0, 229, 255, 0.2),
+    0 18px 40px rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
+}
+[data-style="cyberpunk"] body::before {
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 120%, rgba(124, 58, 237, 0.18), transparent 60%),
+    linear-gradient(180deg, rgba(7, 2, 13, 0.25), rgba(7, 2, 13, 0.45));
+}
+[data-style="cyberpunk"] h1,
+[data-style="cyberpunk"] h2 {
+  text-shadow: 0 0 16px rgba(255, 46, 196, 0.4);
+}
+[data-style="cyberpunk"] .ui-card {
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 0 18px rgba(0, 229, 255, 0.05), var(--shadow);
+}
+[data-style="cyberpunk"] .ui-btn-primary {
+  border: 1px solid rgba(255, 46, 196, 0.6);
+  box-shadow: 0 0 18px rgba(255, 46, 196, 0.45);
+}
+[data-style="cyberpunk"] #navbar {
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+[data-style="cyberpunk"] .section-accent {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  box-shadow: 0 0 12px rgba(255, 46, 196, 0.5);
+}
+[data-style="cyberpunk"] .ui-field {
+  background: rgba(20, 8, 30, 0.6);
+  border: 1px solid var(--border);
+}
+
+/* ---------- 14. Ocean (world) ---------- */
+[data-style="ocean"] {
+  --background: #04283b;
+  --surface: rgba(8, 47, 66, 0.55);
+  --text-primary: #e0f6ff;
+  --text-secondary: #9fd2e4;
+  --primary: #22d3ee;
+  --primary-hover: #67e8f9;
+  --primary-light: rgba(34, 211, 238, 0.14);
+  --secondary: #34d399;
+  --border: rgba(103, 232, 249, 0.22);
+  --border-hover: rgba(103, 232, 249, 0.45);
+  --nav-bg: rgba(4, 31, 46, 0.55);
+  --badge-bg: rgba(34, 211, 238, 0.12);
+  --badge-text: #7deffb;
+  --gradient-start: #67e8f9;
+  --gradient-mid: #22d3ee;
+  --gradient-end: #0ea5e9;
+  --code-bg: rgba(6, 40, 56, 0.8);
+  --hero-glow: rgba(34, 211, 238, 0.16);
+  --shadow: 0 2px 12px rgba(1, 14, 22, 0.5);
+  --shadow-md: 0 8px 24px rgba(1, 14, 22, 0.55);
+  --shadow-lg: 0 18px 44px rgba(1, 14, 22, 0.65);
+  --radius: 20px;
+  --radius-lg: 26px;
+  --tilt: 0.6;
+  --hover-z: 24px;
+  --hover-shadow: 0 20px 50px -14px rgba(1, 14, 22, 0.8), 0 0 28px rgba(34, 211, 238, 0.2);
+  color-scheme: dark;
+}
+[data-style="ocean"].dark {
+  --background: #021520;
+  --surface: rgba(4, 26, 38, 0.6);
+  --nav-bg: rgba(2, 16, 24, 0.6);
+}
+[data-style="ocean"] body::before {
+  background:
+    linear-gradient(180deg, rgba(125, 211, 252, 0.12), transparent 35%),
+    radial-gradient(ellipse 80% 40% at 50% 115%, rgba(1, 10, 16, 0.55), transparent 70%);
+}
+[data-style="ocean"] .ui-card {
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--border);
+}
+[data-style="ocean"] #navbar {
+  backdrop-filter: blur(18px) saturate(140%);
+}
+[data-style="ocean"] .ui-field {
+  background: rgba(8, 47, 66, 0.5);
+  border: 1px solid var(--border);
+}
+
+/* ---------- 15. Library (world) ---------- */
+[data-style="library"] {
+  --background: #f3e9d2;
+  --surface: #faf3e3;
+  --text-primary: #3b2a17;
+  --text-secondary: #7a6142;
+  --primary: #8b5a2b;
+  --primary-hover: #6f4518;
+  --primary-light: rgba(139, 90, 43, 0.12);
+  --secondary: #b08d57;
+  --border: #dcc9a4;
+  --border-hover: #c4a875;
+  --nav-bg: rgba(243, 233, 210, 0.82);
+  --badge-bg: #ecdcbb;
+  --badge-text: #6f4518;
+  --gradient-start: #6f4518;
+  --gradient-mid: #a5713d;
+  --gradient-end: #c9974a;
+  --code-bg: #ece0c6;
+  --hero-glow: rgba(201, 151, 74, 0.22);
+  --shadow: 0 2px 8px rgba(84, 58, 24, 0.14);
+  --shadow-md: 0 6px 18px rgba(84, 58, 24, 0.18);
+  --shadow-lg: 0 14px 32px rgba(84, 58, 24, 0.24);
+  --radius: 6px;
+  --radius-lg: 10px;
+  --tilt: 0.5;
+  --hover-shadow: 0 16px 34px -8px rgba(84, 58, 24, 0.3);
+}
+[data-style="library"].dark {
+  --background: #17100a;
+  --surface: #241a10;
+  --text-primary: #f3e7d3;
+  --text-secondary: #c0a480;
+  --primary: #d9a05b;
+  --primary-hover: #e8b878;
+  --primary-light: rgba(217, 160, 91, 0.14);
+  --secondary: #b08d57;
+  --border: #3a2c1c;
+  --border-hover: #55402a;
+  --nav-bg: rgba(23, 16, 10, 0.85);
+  --badge-bg: rgba(217, 160, 91, 0.14);
+  --badge-text: #e8c391;
+  --gradient-start: #e8b878;
+  --gradient-mid: #d9a05b;
+  --gradient-end: #b0763a;
+  --code-bg: #2a1e12;
+  --hero-glow: rgba(255, 166, 66, 0.14);
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.65);
+  --hover-shadow: 0 16px 34px -8px rgba(0, 0, 0, 0.7), 0 0 24px rgba(255, 166, 66, 0.1);
+}
+[data-style="library"] h1,
+[data-style="library"] h2,
+[data-style="library"] h3,
+[data-style="library"] h4 {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0;
+}
+[data-style="library"] body::before {
+  background: radial-gradient(ellipse 120% 90% at 50% 50%, transparent 55%, rgba(84, 58, 24, 0.16) 100%);
+}
+[data-style="library"].dark body::before {
+  background:
+    radial-gradient(ellipse 40% 30% at 12% 92%, rgba(255, 166, 66, 0.12), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 88% 90%, rgba(255, 166, 66, 0.1), transparent 70%),
+    radial-gradient(ellipse 120% 90% at 50% 50%, transparent 50%, rgba(0, 0, 0, 0.45) 100%);
+}
+/* cards read as book covers: cloth spine on the left */
+[data-style="library"] .ui-card {
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--primary) 7%, transparent), transparent 18%),
+    var(--surface);
+}
+[data-style="library"] .ui-field {
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  border: 1px solid var(--border);
+}
+
+/* ---------- 16. Sakura (world) ----------
+   Real cherry-blossom photography behind the page. Light mode is a
+   daylight hanami picnic — washi paper and soft pinks; dark mode is a
+   lantern-lit evening along the Meguro river. */
+[data-style="sakura"] {
+  --background: #fbf3f4;
+  --surface: rgba(255, 250, 250, 0.82);
+  --text-primary: #3a2732;
+  --text-secondary: #7d5f6e;
+  --primary: #d4577c;
+  --primary-hover: #c04368;
+  --primary-light: rgba(212, 87, 124, 0.11);
+  --secondary: #7fa8d9;
+  --border: #ecd5dc;
+  --border-hover: #d9b3bf;
+  --nav-bg: rgba(251, 243, 244, 0.78);
+  --badge-bg: #f8e3e9;
+  --badge-text: #b03e60;
+  --gradient-start: #e26a90;
+  --gradient-mid: #f0a3ba;
+  --gradient-end: #7fa8d9;
+  --code-bg: #f5e7ea;
+  --hero-glow: rgba(226, 106, 144, 0.14);
+  --shadow: 0 2px 8px rgba(90, 50, 65, 0.1);
+  --shadow-md: 0 6px 16px rgba(90, 50, 65, 0.14);
+  --shadow-lg: 0 14px 30px rgba(90, 50, 65, 0.18);
+  --radius: 16px;
+  --radius-lg: 22px;
+  /* petal-light: gentle tilt, blush glow on lift */
+  --tilt: 0.4;
+  --hover-y: -4px;
+  --hover-z: 12px;
+  --hover-shadow: 0 16px 34px -10px rgba(176, 62, 96, 0.28);
+}
+[data-style="sakura"].dark {
+  --background: #171021;
+  --surface: rgba(36, 26, 46, 0.82);
+  --text-primary: #f4e8f0;
+  --text-secondary: #bda3b8;
+  --primary: #f090ac;
+  --primary-hover: #ffabc2;
+  --primary-light: rgba(240, 144, 172, 0.13);
+  --secondary: #ffb27d;
+  --border: rgba(150, 110, 140, 0.4);
+  --border-hover: rgba(200, 150, 180, 0.6);
+  --nav-bg: rgba(23, 16, 33, 0.8);
+  --badge-bg: rgba(240, 144, 172, 0.13);
+  --badge-text: #f8b6c8;
+  --gradient-start: #f090ac;
+  --gradient-mid: #d4739a;
+  --gradient-end: #ffb27d;
+  --code-bg: #221831;
+  --hero-glow: rgba(240, 144, 172, 0.12);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 14px 30px rgba(0, 0, 0, 0.55);
+  --hover-shadow: 0 16px 34px -10px rgba(0, 0, 0, 0.6), 0 0 24px rgba(240, 144, 172, 0.14);
+}
+[data-style="sakura"] h1,
+[data-style="sakura"] h2,
+[data-style="sakura"] h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0.02em;
+  /* white halo lifts dark ink off the busy blossom photography */
+  text-shadow: 0 1px 18px rgba(255, 250, 250, 0.85), 0 0 6px rgba(255, 250, 250, 0.6);
+}
+/* the halo bleeds through clipped gradient text and washes it out — deepen
+   the ink instead so the name reads over the blossoms */
+[data-style="sakura"] .gradient-text {
+  text-shadow: none;
+  background-image: linear-gradient(135deg, #b03e60, #d4577c 55%, #4c7fc0);
+}
+[data-style="sakura"].dark .gradient-text {
+  background-image: linear-gradient(135deg, #f8a8c0, #f090ac 55%, #ffb27d);
+}
+[data-style="sakura"] p {
+  text-shadow: 0 1px 10px rgba(255, 250, 250, 0.6);
+}
+[data-style="sakura"].dark h1,
+[data-style="sakura"].dark h2,
+[data-style="sakura"].dark h3 {
+  text-shadow: 0 2px 16px rgba(10, 5, 15, 0.7);
+}
+[data-style="sakura"].dark p {
+  text-shadow: 0 1px 8px rgba(10, 5, 15, 0.55);
+}
+/* washi-paper wash keeps text readable over the blossom photography */
+[data-style="sakura"] body::before {
+  background:
+    linear-gradient(180deg, rgba(255, 250, 250, 0.6), rgba(255, 246, 248, 0.32) 30%, rgba(255, 244, 247, 0.28) 62%, rgba(80, 45, 60, 0.16) 100%),
+    radial-gradient(ellipse 130% 95% at 50% 45%, transparent 55%, rgba(120, 70, 90, 0.2) 100%);
+}
+/* evening: plum vignette lit from within by the lanterns */
+[data-style="sakura"].dark body::before {
+  background:
+    radial-gradient(ellipse 130% 95% at 50% 45%, transparent 52%, rgba(12, 6, 18, 0.55) 100%),
+    linear-gradient(180deg, rgba(14, 8, 20, 0.3), rgba(12, 6, 18, 0.48));
+}
+[data-style="sakura"] .ui-card {
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(9px);
+}
+[data-style="sakura"] .ui-card:hover {
+  border-color: var(--border-hover);
+}
+[data-style="sakura"] .ui-btn-primary {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid));
+  border: none;
+  box-shadow: 0 6px 16px rgba(212, 87, 124, 0.3);
+}
+[data-style="sakura"] .ui-btn-primary:hover {
+  filter: brightness(1.06);
+}
+[data-style="sakura"] #navbar {
+  backdrop-filter: blur(10px);
+}
+[data-style="sakura"] .section-accent {
+  width: 4rem;
+  height: 0.25rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid) 55%, var(--gradient-end));
+}
+[data-style="sakura"] .ui-field {
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+}
+[data-style="sakura"] .ui-badge-default {
+  border: 1px solid rgba(212, 87, 124, 0.22);
+}
+
+/* ---------- 17. Terminal (world) ---------- */
+[data-style="terminal"] {
+  --background: #020a04;
+  --surface: rgba(3, 22, 9, 0.82);
+  --text-primary: #baf7c4;
+  --text-secondary: #63b374;
+  --primary: #34d971;
+  --primary-hover: #5ff08e;
+  --primary-light: rgba(52, 217, 113, 0.12);
+  --secondary: #22c55e;
+  --border: rgba(52, 217, 113, 0.3);
+  --border-hover: rgba(52, 217, 113, 0.6);
+  --nav-bg: rgba(2, 10, 4, 0.82);
+  --badge-bg: rgba(52, 217, 113, 0.1);
+  --badge-text: #7ef2a2;
+  --gradient-start: #5ff08e;
+  --gradient-mid: #34d971;
+  --gradient-end: #16a34a;
+  --code-bg: #04170a;
+  --hero-glow: rgba(52, 217, 113, 0.12);
+  --shadow: 0 0 0 rgba(0, 0, 0, 0);
+  --shadow-md: 0 0 16px rgba(52, 217, 113, 0.08);
+  --shadow-lg: 0 0 24px rgba(52, 217, 113, 0.12);
+  --radius: 4px;
+  --radius-lg: 6px;
+  --tilt: 0.25;
+  --hover-y: 0px;
+  --hover-z: 8px;
+  --hover-scale: 1;
+  --hover-shadow: 0 0 20px rgba(52, 217, 113, 0.25);
+  color-scheme: dark;
+}
+[data-style="terminal"] body {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+[data-style="terminal"] body::before {
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.25) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse 130% 100% at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.55) 100%);
+}
+[data-style="terminal"] .gradient-text {
+  background: none;
+  -webkit-text-fill-color: var(--primary);
+  color: var(--primary);
+  text-shadow: 0 0 18px rgba(52, 217, 113, 0.55);
+}
+[data-style="terminal"] h1::after {
+  content: "▊";
+  margin-left: 0.15em;
+  color: var(--primary);
+  animation: caretBlink 1.1s steps(1) infinite;
+}
+@keyframes caretBlink {
+  50% { opacity: 0; }
+}
+[data-style="terminal"] .ui-card {
+  border: 1px solid var(--border);
+  box-shadow: inset 0 0 24px rgba(52, 217, 113, 0.05);
+}
+[data-style="terminal"] .ui-btn-primary {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  text-shadow: 0 0 10px rgba(52, 217, 113, 0.5);
+}
+[data-style="terminal"] .ui-btn-primary:hover {
+  background: var(--primary-light);
+  box-shadow: 0 0 18px rgba(52, 217, 113, 0.35);
+}
+[data-style="terminal"] .ui-field {
+  background: rgba(2, 16, 6, 0.8);
+  border: 1px solid var(--border);
+  caret-color: var(--primary);
+}
+[data-style="terminal"] #navbar {
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: none;
+}
+[data-style="terminal"] .section-accent {
+  background: var(--primary);
+  box-shadow: 0 0 10px rgba(52, 217, 113, 0.5);
+}
+
+/* ---------- 18. Wildwood (world) ----------
+   A living forest walk. The canvas is the environment; the UI reads as
+   dark carved wood over it, day or night, like trail signage. */
+[data-style="wildwood"] {
+  --background: #16220f;
+  --surface: rgba(48, 37, 22, 0.85);
+  --text-primary: #f3ecd8;
+  --text-secondary: #cdbf9d;
+  --primary: #9ccb77;
+  --primary-hover: #b4de92;
+  --primary-light: rgba(156, 203, 119, 0.14);
+  --secondary: #dfa45f;
+  --border: rgba(126, 99, 60, 0.6);
+  --border-hover: rgba(168, 136, 88, 0.85);
+  --nav-bg: rgba(26, 20, 11, 0.72);
+  --badge-bg: rgba(156, 203, 119, 0.13);
+  --badge-text: #c0e6a0;
+  --gradient-start: #b4de92;
+  --gradient-mid: #9ccb77;
+  --gradient-end: #dfa45f;
+  --code-bg: rgba(32, 25, 14, 0.9);
+  --hero-glow: rgba(255, 216, 134, 0.12);
+  --shadow: 0 3px 10px rgba(8, 10, 5, 0.5);
+  --shadow-md: 0 8px 20px rgba(8, 10, 5, 0.55);
+  --shadow-lg: 0 16px 38px rgba(8, 10, 5, 0.65);
+  --radius: 10px;
+  --radius-lg: 14px;
+  --tilt: 0.5;
+  --hover-y: -4px;
+  --hover-z: 18px;
+  --hover-shadow: 0 18px 40px -10px rgba(0, 0, 0, 0.7), 0 0 26px rgba(156, 203, 119, 0.12);
+  color-scheme: dark;
+}
+/* readability vignette over the bright day forest / deep night woods */
+[data-style="wildwood"] body::before {
+  background:
+    radial-gradient(ellipse 130% 95% at 50% 45%, transparent 52%, rgba(8, 12, 6, 0.5) 100%),
+    linear-gradient(180deg, rgba(10, 14, 8, 0.1), rgba(8, 12, 6, 0.38));
+}
+[data-style="wildwood"] h1,
+[data-style="wildwood"] h2,
+[data-style="wildwood"] h3 {
+  text-shadow: 0 2px 16px rgba(6, 10, 4, 0.65);
+}
+[data-style="wildwood"] p {
+  text-shadow: 0 1px 8px rgba(6, 10, 4, 0.5);
+}
+/* cards: weathered wooden boards */
+[data-style="wildwood"] .ui-card {
+  background:
+    repeating-linear-gradient(92deg, rgba(0, 0, 0, 0.14) 0 2px, transparent 2px 7px),
+    repeating-linear-gradient(88deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 6px),
+    linear-gradient(180deg, #4c3c24 0%, #3a2d1a 100%);
+  border: 1px solid #241b0e;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), inset 0 -2px 6px rgba(0, 0, 0, 0.3),
+    var(--shadow-md);
+}
+/* buttons: carved wood with engraved lettering */
+[data-style="wildwood"] .ui-btn-primary {
+  background: linear-gradient(180deg, #5f4b2c 0%, #4a3a20 55%, #3a2d17 100%);
+  border: 1px solid #221a0d;
+  color: #d9ecc2;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 6px 14px rgba(0, 0, 0, 0.45);
+}
+[data-style="wildwood"] .ui-btn-primary:hover {
+  filter: brightness(1.12);
+}
+[data-style="wildwood"] .ui-btn-primary:active {
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.55);
+  transform: translateY(1px);
+}
+[data-style="wildwood"] .ui-btn-secondary {
+  background: linear-gradient(180deg, rgba(60, 47, 27, 0.85), rgba(44, 34, 19, 0.85));
+  border: 1px solid #241b0e;
+  color: #e9dfc4;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+[data-style="wildwood"] #navbar {
+  background: linear-gradient(180deg, rgba(32, 25, 14, 0.85), rgba(24, 18, 10, 0.72)) !important;
+  border-bottom: 1px solid #241b0e;
+  backdrop-filter: blur(8px);
+}
+[data-style="wildwood"] .ui-field {
+  background: rgba(30, 23, 13, 0.8);
+  border: 1px solid var(--border);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+[data-style="wildwood"] .section-accent {
+  width: 4.5rem;
+  height: 0.3rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #6f9c4f, #9ccb77 55%, #dfa45f);
+  box-shadow: 0 0 12px rgba(156, 203, 119, 0.35);
+}
+[data-style="wildwood"] .ui-badge-default {
+  border: 1px solid rgba(156, 203, 119, 0.25);
+}
+
+/* ========================================================
+   POLISH LAYER — themed form fields, section accents,
+   nav-link treatments, badge micro-interactions, hero tilt
+   ======================================================== */
+
+/* Badges gently pop on hover in every style */
+.ui-badge {
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+.ui-badge:hover {
+  transform: translateY(-2px) scale(1.06);
+}
+
+
+/* --- Section accent bar takes on each style's personality --- */
+[data-style="maximalism"] .section-accent {
+  width: 5rem;
+  height: 0.375rem;
+  background: linear-gradient(90deg, #6366f1, #ec4899, #f59e0b, #10b981, #6366f1);
+  background-size: 300% 100%;
+  animation: rainbowShift 4s linear infinite;
+}
+[data-style="brutalism"] .section-accent {
+  width: 5rem;
+  height: 0.5rem;
+  border-radius: 0;
+  background: var(--text-primary);
+}
+[data-style="minimalism"] .section-accent {
+  width: 2.5rem;
+  height: 1px;
+  background: var(--text-primary);
+}
+[data-style="neumorphism"] .section-accent {
+  width: 4rem;
+  height: 0.5rem;
+  background: var(--surface);
+  box-shadow: inset 3px 3px 6px #bcc6d6, inset -3px -3px 6px #ffffff;
+}
+[data-style="neumorphism"].dark .section-accent {
+  box-shadow: inset 3px 3px 6px #171b27, inset -3px -3px 6px #2f3649;
+}
+[data-style="claymorphism"] .section-accent {
+  width: 4rem;
+  height: 0.625rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  box-shadow: var(--shadow);
+}
+[data-style="glassmorphism"] .section-accent,
+[data-style="liquid-glass"] .section-accent {
+  width: 4rem;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+/* --- Contact form fields restyled per theme --- */
+[data-style="neumorphism"] .ui-field {
+  border: none;
+  box-shadow: inset 5px 5px 10px #bcc6d6, inset -5px -5px 10px #ffffff;
+}
+[data-style="neumorphism"].dark .ui-field {
+  box-shadow: inset 5px 5px 10px #171b27, inset -5px -5px 10px #2f3649;
+}
+[data-style="brutalism"] .ui-field {
+  border: 3px solid var(--border);
+  border-radius: 0;
+}
+[data-style="brutalism"] .ui-field:focus {
+  border-color: var(--border);
+  box-shadow: 4px 4px 0 var(--text-primary);
+}
+[data-style="glassmorphism"] .ui-field,
+[data-style="liquid-glass"] .ui-field {
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
+  border: 1px solid color-mix(in srgb, #fff 30%, transparent);
+  backdrop-filter: blur(12px);
+}
+[data-style="claymorphism"] .ui-field {
+  border: none;
+  border-radius: 20px;
+  box-shadow: inset 4px 4px 10px rgba(150, 140, 210, 0.25), inset -3px -3px 8px rgba(255, 255, 255, 0.7);
+}
+[data-style="claymorphism"].dark .ui-field {
+  box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.4), inset -3px -3px 8px rgba(255, 255, 255, 0.05);
+}
+[data-style="skeuomorphism"] .ui-field {
+  border: 1px solid var(--border);
+  box-shadow: inset 0 2px 4px rgba(60, 45, 20, 0.12);
+}
+[data-style="minimalism"] .ui-field {
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+[data-style="minimalism"] .ui-field:focus {
+  border-bottom-color: var(--text-primary);
+}
+
+/* --- Navbar links take on the theme --- */
+[data-style="brutalism"] a[id^="nav-"]:not(#nav-logo):hover,
+[data-style="brutalism"] a[id^="mobile-nav-"]:hover {
+  background: var(--text-primary);
+  color: var(--background);
+  border-radius: 0;
+}
+[data-style="minimalism"] a[id^="nav-"]:not(#nav-logo) {
+  background-image: linear-gradient(var(--text-primary), var(--text-primary));
+  background-repeat: no-repeat;
+  background-position: 50% 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.3s ease, color 0.2s ease;
+}
+[data-style="minimalism"] a[id^="nav-"]:not(#nav-logo):hover {
+  background-color: transparent;
+  background-size: 70% 1px;
+}
+[data-style="maximalism"] a[id^="nav-"]:not(#nav-logo):hover {
+  background: linear-gradient(90deg, #6366f1, #ec4899);
+  color: #fff;
+}
+
+/* ========================================================
+   3D DEPTH SYSTEM
+   Pointer tilt + glare on cards, hero depth rig, floating
+   ornaments, and 3D scroll reveals. Angles/positions come
+   from Tilt3D.tsx (--rx/--ry/--mx/--my on cards, --px/--py
+   on the hero scene); Reveal.tsx toggles the .rv3 classes.
+   Minimalism & Brutalism stay flat by design; reduced
+   motion disables everything below.
+   ======================================================== */
+
+/* --- Card tilt pipeline (every style except the flat two).
+   :where() keeps specificity low so style blocks can still override.
+   Per-style personality comes from the --tilt / --hover-* tokens. --- */
+html:where(:not([data-style="minimalism"]):not([data-style="brutalism"])) .ui-card {
+  position: relative;
+  transform: perspective(1100px)
+    rotateX(calc(var(--rx, 0deg) * var(--tilt, 0.55)))
+    rotateY(calc(var(--ry, 0deg) * var(--tilt, 0.55)))
+    translate3d(var(--hx, 0px), var(--hy, 0px), var(--hz, 0px))
+    scale(var(--hs, 1));
+  transition: transform 0.22s ease-out, box-shadow 0.35s ease,
+    border-color 0.35s ease, border-radius 0.6s ease;
+}
+/* lift while hovered; releasing to :active drops the card back = press feel */
+html:where(:not([data-style="minimalism"]):not([data-style="brutalism"])) .ui-card.card-hover:hover:not(:active) {
+  --hx: var(--hover-x);
+  --hy: var(--hover-y);
+  --hz: var(--hover-z);
+  --hs: var(--hover-scale);
+  box-shadow: var(--hover-shadow);
+  border-color: var(--border-hover);
+  z-index: 2;
+}
+
+/* --- Moving glare that follows the pointer (glossy styles only) --- */
+html:where(:not([data-style]), [data-style="modern"], [data-style="bento-grid"], [data-style="spatial-ui"], [data-style="liquid-glass"], [data-style="space"], [data-style="ocean"], [data-style="cyberpunk"]) .ui-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(480px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.14), transparent 46%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+html:where(:not([data-style]), [data-style="modern"], [data-style="bento-grid"], [data-style="spatial-ui"], [data-style="liquid-glass"], [data-style="space"], [data-style="ocean"], [data-style="cyberpunk"]) .ui-card:hover::after {
+  opacity: 1;
+}
+
+/* --- Media tilt: the hero photo (and anything tagged data-tilt) leans
+   toward the pointer and drifts forward against the parallax field --- */
+html:where(:not([data-style="minimalism"]):not([data-style="brutalism"])) [data-tilt] {
+  transform: perspective(1200px)
+    rotateX(calc(var(--rx, 0deg) * 0.7))
+    rotateY(calc(var(--ry, 0deg) * 0.7))
+    translate3d(calc(var(--px, 0) * -16px), calc(var(--py, 0) * -10px), 0)
+    scale(var(--media-scale, 1));
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+}
+.group:hover [data-tilt] {
+  --media-scale: 1.03;
+}
+
+/* --- Hero depth rig: layers translate at their own rate against the
+   pointer (--px/--py set on [data-parallax-scene] by Tilt3D) --- */
+.hero-scene {
+  perspective: 1600px;
+}
+.hero-layer {
+  transform: translate3d(
+    calc(var(--px, 0) * var(--depth-x, 20px)),
+    calc(var(--py, 0) * var(--depth-y, 14px)), 0);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* --- 3D scroll reveals (Reveal.tsx): elements settle flat from a
+   tilted-back / swung-away start as they enter the viewport --- */
+.rv3 {
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
+  will-change: transform, opacity;
+}
+.rv3-rise { opacity: 0; transform: perspective(1000px) translateY(48px) rotateX(9deg) scale(0.98); }
+.rv3-flip { opacity: 0; transform-origin: 50% 85%; transform: perspective(900px) translateY(56px) rotateX(26deg) scale(0.96); }
+.rv3-left { opacity: 0; transform: perspective(1000px) translateX(-52px) rotateY(12deg); }
+.rv3-right { opacity: 0; transform: perspective(1000px) translateX(52px) rotateY(-12deg); }
+.rv3-zoom { opacity: 0; transform: perspective(1000px) translateZ(-110px); }
+.rv3.rv3-in {
+  opacity: 1;
+  transform: perspective(1000px) translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) scale(1);
+}
+/* side-swings would poke past the viewport on small screens — swing up instead */
+@media (max-width: 767px) {
+  .rv3-left,
+  .rv3-right {
+    transform: perspective(1000px) translateY(48px) rotateX(9deg) scale(0.98);
+  }
+}
+
+/* Respect reduced-motion preferences across all variants */
+@media (prefers-reduced-motion: reduce) {
+  html.style-anim body,
+  [data-style] .ui-card,
+  [data-style] .ui-card::before,
+  [data-style] .ui-card::after,
+  [data-style] .ui-btn,
+  [data-style] body::before,
+  [data-style] .gradient-text,
+  [data-style] h1,
+  [data-style] h2,
+  [data-style] .section-accent {
+    animation: none !important;
+  }
+  .ui-card,
+  [data-tilt],
+  .hero-layer {
+    transform: none !important;
+    transition-property: box-shadow, border-color, background-color !important;
+  }
+  .rv3 {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .forest-overlay,
+  .world-canvas,
+  .cursor-fx {
+    display: none !important;
+  }
+  [data-style="terminal"] h1::after {
+    animation: none;
+  }
+  .animate-fade-in-up,
+  .animate-fade-in-up-delay-1,
+  .animate-fade-in-up-delay-2,
+  .animate-fade-in-up-delay-3 {
+    animation: none !important;
+    opacity: 1;
+  }
 }

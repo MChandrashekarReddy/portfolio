@@ -75,7 +75,7 @@ function SocialIcon({ icon }: { icon: string }) {
 }
 
 const fieldClass =
-  "w-full px-4 py-3 rounded-xl bg-surface border border-transparent text-text-primary placeholder:text-text-secondary focus:outline-none focus-visible:outline-none focus:border-primary transition-colors duration-200";
+  "ui-field w-full px-4 py-3 rounded-xl bg-surface border border-transparent text-text-primary placeholder:text-text-secondary focus:outline-none focus-visible:outline-none focus:border-primary transition-colors duration-200";
 
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -138,7 +138,7 @@ export function Contact() {
 
         <div className="grid md:grid-cols-2 gap-10 md:gap-16">
           {/* Contact info */}
-          <Reveal className="flex flex-col h-full justify-between">
+          <Reveal variant="left" className="flex flex-col h-full justify-between">
             <div className="pb-6 border-b border-border-custom">
               <p className="text-sm text-text-secondary mb-1">My Place:</p>
               <a
@@ -208,7 +208,7 @@ export function Contact() {
           </Reveal>
 
           {/* Contact form */}
-          <Reveal delay={100}>
+          <Reveal variant="right" delay={100}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="grid sm:grid-cols-2 gap-4">
               <input
