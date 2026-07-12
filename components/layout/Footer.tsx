@@ -47,19 +47,26 @@ export function Footer() {
             <svg className="w-7 h-7 shrink-0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
               <rect x="0" y="0" width="512" height="512" rx="112" ry="112" fill="#0F172A" />
               <path
-                d="M 378.15 152.83 A 160 160 0 1 1 378.15 359.17"
+                d="M 243.6 182.3 A 90 90 0 1 0 243.6 329.7"
                 fill="none"
-                stroke="#3B82F6"
-                strokeWidth="52"
+                stroke="#FFFFFF"
+                strokeWidth="44"
                 strokeLinecap="round"
               />
               <path
-                d="M 168 344 L 168 168 L 256 256 L 344 168 L 344 344"
+                d="M 318 346 L 318 166 L 348 166 A 48 48 0 0 1 348 262 L 318 262"
                 fill="none"
-                stroke="#FFFFFF"
-                strokeWidth="48"
+                stroke="#3B82F6"
+                strokeWidth="44"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+              />
+              <path
+                d="M 352 266 L 402 346"
+                fill="none"
+                stroke="#3B82F6"
+                strokeWidth="44"
+                strokeLinecap="round"
               />
             </svg>
             <p className="text-sm text-text-secondary">

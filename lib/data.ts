@@ -15,8 +15,8 @@ export const services = [
     id: "1",
     icon: "code",
     title: "Full-Stack Application Development",
-    description: "End-to-end delivery of scalable web applications — from requirements and system design to development, testing, and production deployment. Backend APIs with FastAPI, Flask, and Django; responsive frontends with React, Angular, and TypeScript.",
-    techStack: ["FastAPI", "Flask", "Django", "React", "Angular", "TypeScript"]
+    description: "End-to-end delivery of scalable web applications — from requirements and system design to development, testing, and production deployment. Backend APIs with FastAPI, Flask, and .NET; responsive frontends with React, Next.js, Angular, and TypeScript.",
+    techStack: ["FastAPI", "Flask", ".NET", "React", "Next.js", "Angular", "TypeScript"]
   },
   {
     id: "2",
@@ -36,8 +36,8 @@ export const services = [
     id: "4",
     icon: "ai",
     title: "AI Integration & Automation",
-    description: "Exploring and integrating large language models like LLaMA and Ollama into applications, using AI to automate workflows and improve user interactions beyond traditional software engineering.",
-    techStack: ["LLaMA", "Ollama", "LLM Integration"]
+    description: "Integrating AI into products — chatbots, RAG-based document assistants, and AI data extraction — built with LangChain and LangGraph, connecting to both local (Ollama) and cloud LLM providers.",
+    techStack: ["LangChain", "LangGraph", "Ollama", "LLM Integration"]
   }
 ];
 
@@ -51,9 +51,9 @@ export const heroData = {
 export const aboutData = {
   bio: [
     "I'm a software developer experienced in building complete application solutions from development to deployment. I currently work as an Associate Engineer at YottaFlex AI Technologies Inc, where I contribute to building scalable, reliable systems for real-world business needs — from understanding requirements and designing components to developing, testing, and deploying features in production.",
-    "On the backend, I design APIs and application logic with Python frameworks like FastAPI, Flask, and Django; on the frontend, I build responsive applications with React, Angular, TypeScript, and Tailwind CSS. Beyond development, I set up and manage cloud infrastructure on AWS and Azure — configuring networking, security, deployment pipelines, and monitoring — and explore how AI technologies like LLaMA and Ollama can enhance applications through automation and better user experiences."
+    "On the backend, I design APIs and application logic with Python (FastAPI, Flask) and .NET; on the frontend, I build responsive applications with React, Next.js, Angular, TypeScript, and Tailwind CSS. Beyond development, I set up and manage cloud infrastructure on AWS and Azure — configuring networking, security, deployment pipelines, and monitoring — and build AI features like chatbots, RAG-based assistants, and document data extraction with LangChain and LangGraph, switching seamlessly between local (Ollama) and cloud LLM providers such as OpenAI."
   ],
-  experienceYears: 3,
+  experienceYears: 2,
   projectsCompleted: 4,
   infraBuilt: 1,
   happyClients: 5
@@ -64,22 +64,15 @@ export const experience = [
     id: "1",
     role: "Associate Engineer",
     company: "YottaFlex AI Technologies Inc",
-    duration: "2025 - Present",
-    description: "Building scalable, reliable systems end-to-end — from requirements and component design to development, testing, and production deployment. Design APIs and application logic with FastAPI, Flask, and Django, and build responsive frontends with React, Angular, and Tailwind CSS. Set up and manage cloud infrastructure on AWS and Azure, including networking, security, deployment pipelines, and monitoring, and explore applying AI (LLaMA, Ollama) to enhance applications."
+    duration: "Dec 2024 - Present",
+    description: "Building scalable, reliable systems end-to-end — from requirements and component design to development, testing, and production deployment. Design APIs and application logic with FastAPI and Flask, build responsive frontends with React, Angular, and Tailwind CSS, and develop B2B integrations in .NET connecting partner systems and third-party services. Provision and manage AWS infrastructure as code with Terraform — ECS behind an internal ALB, exposed via API Gateway with VPC Link — and integrated a third-party SaaS e-signature platform for digital document signing with secure webhooks tracking signature events."
   },
   {
     id: "2",
     role: "Junior Engineer",
     company: "YottaFlex AI Technologies Inc",
-    duration: "Jan 2024 - Dec 2024",
-    description: "Developed backend services and REST APIs with Python (Flask, FastAPI, Django) and Java/Spring Boot, and built frontend features with React, Angular, and TypeScript. Worked with PostgreSQL and MySQL, contributed to AWS-hosted deployments, and wrote automated tests with Selenium."
-  },
-  {
-    id: "3",
-    role: "Project Intern",
-    company: "Yotta Tech Ports (YTP)",
-    duration: "Jun 2023 - Dec 2023",
-    description: "Interned for 6 months, contributing to the development and deployment of scalable web applications. Assisted in integrating front-end technologies (HTML, CSS, JavaScript, Angular) and backend services (Java, Spring Boot, REST APIs). Participated in designing and testing critical components, ensuring performance and security optimization in AWS cloud environments."
+    duration: "Jul 2024 - Dec 2024",
+    description: "Developed backend services and REST APIs with Python (Flask), and built frontend features with React, Angular, and TypeScript. Worked with PostgreSQL and MySQL, contributed to AWS-hosted deployments, and wrote automated tests with Selenium."
   }
 ];
 
@@ -97,7 +90,7 @@ export const education: Education[] = [
     id: "1",
     degree: "Java Full-Stack Development Training",
     institution: "JSpiders",
-    duration: "2023 - 2024",
+    duration: "2023 - Jul 2024",
     skills: ["Core Java", "Spring", "Spring Boot", "Spring MVC", "Hibernate", "SQL", "JavaScript", "Bootstrap"]
   },
   {
@@ -137,12 +130,8 @@ export const skills = [
   { name: "Python", category: "Backend" },
   { name: "Flask", category: "Backend" },
   { name: "FastAPI", category: "Backend" },
-  { name: "Django", category: "Backend" },
   { name: "REST APIs", category: "Backend" },
   { name: "Java", category: "Backend" },
-  { name: "Spring Boot", category: "Backend" },
-  { name: "Spring Framework", category: "Backend" },
-  { name: "Hibernate", category: "Backend" },
   { name: ".NET", category: "Backend" },
   { name: "PostgreSQL", category: "Database" },
   { name: "MySQL", category: "Database" },
@@ -174,6 +163,7 @@ export const skills = [
   { name: "Postman", category: "Tools" },
   { name: "VS Code", category: "Tools" },
   { name: "Selenium", category: "Testing" },
+  { name: "Playwright", category: "Testing" },
   { name: "TestNG", category: "Testing" },
   { name: "Manual Testing", category: "Testing" }
 ];
@@ -192,27 +182,27 @@ type Project = {
 export const projects: Project[] = [
   {
     id: "1",
-    title: "Lumino",
-    role: "Full-Stack Developer & Infra",
-    description: "An agentic AI strategic platform for nonprofit and for-profit organizations, guiding market intelligence, strategic planning, and change management. Combines AI-assisted PDF data extraction with recommendations; also architected the underlying cloud infrastructure.",
-    techStack: ["Python", "FastAPI", "React", "AI", "AWS", "Terraform", "Textract"],
-    featured: true,
-    liveUrl: "https://www.luminoinsight.com/"
-  },
-  {
-    id: "2",
     title: "Equivesto",
-    role: "Full-Stack Developer",
-    description: "An investor management and onboarding platform with KYC/AML compliance (identity verification, watchlist/PEP screening), portfolio tracking, and Zoho integration — evolved into a white-label SaaS offering for other businesses, including a .NET-based iOS app.",
+    role: "Full-Stack Developer & Infra",
+    description: "An investor management and onboarding platform with KYC/AML compliance (identity verification, watchlist/PEP screening), portfolio tracking, and external client integrations with the Zoho SaaS suite, including Zoho Sign e-signatures with secure webhooks. Built the end-to-end transaction flow with dynamically customizable investment limits; runs on Azure (App Service, Azure SQL, Key Vault, Application Insights).",
     techStack: ["Angular", ".NET", "Azure", "Zoho", "SQL Server", "KYC/AML"],
     featured: true,
     liveUrl: "https://equivesto-issuercrm-webapp-dev.azurewebsites.net/"
   },
   {
+    id: "2",
+    title: "Lumino",
+    role: "Full-Stack Developer & Infra",
+    description: "An agentic AI strategy platform for nonprofit and for-profit organizations, guiding market intelligence, strategic planning, and change management. Extracts data from US public tax filings with AWS Textract into a normalized relational store, turns organizational ambitions into phased roadmaps of milestones, goals, and projects with OpenAI-powered progress insights, and is fully customizable from reusable building blocks; also architected the underlying AWS infrastructure with Terraform.",
+    techStack: ["Python", "FastAPI", "React", "OpenAI", "AWS", "Terraform", "Textract"],
+    featured: true,
+    liveUrl: "https://www.luminoinsight.com/"
+  },
+  {
     id: "3",
     title: "Aeon",
     role: "Full-Stack Developer & Testing",
-    description: "A multi-tenant loan case management platform that automates credit memo processing with AI-powered data extraction, OCR, and an embeddings-based assistant, supporting role-based workflows for admins, attorneys, processors, and reviewers across banks.",
+    description: "A multi-tenant loan case management platform that automates credit memo processing with AI-powered data extraction, OCR, and an embeddings-based assistant, supporting role-based workflows for admins, attorneys, processors, and reviewers across banks. Built React screens and Flask REST APIs across the stack, and implemented the automated testing framework from scratch with Selenium and TestNG for regression coverage of critical flows.",
     techStack: ["React", "RAG","Python", "Flask", "PostgreSQL", "AWS"],
     featured: true,
     liveUrl: "https://aeonlegaltech.com/"

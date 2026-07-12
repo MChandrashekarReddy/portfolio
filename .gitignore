@@ -44,3 +44,11 @@ yarn-error.log*
 next-env.d.ts
 
 .vscode
+# LaTeX build artifacts
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex*
+missfont.log
