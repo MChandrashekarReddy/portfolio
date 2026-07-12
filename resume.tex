@@ -1,0 +1,165 @@
+\documentclass{resume} % Use the custom resume.cls style
+
+\usepackage[left=0.4 in,top=0.4in,right=0.4 in,bottom=0.4in]{geometry} % Document margins
+\usepackage{multicol}
+\usepackage{fontawesome5}
+\newcommand{\tab}[1]{\hspace{.2667\textwidth}\rlap{#1}}
+\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+\name{MUKKU CHANDRASEKHAR REDDY} % Your name
+
+\address{\
+  \faPhone\ \href{tel:+919494485010}{+91 9494485010} \
+  \faEnvelope\ \href{mailto:mukkuchandrasekharreddy2001@gmail.com}{mukkuchandrasekharreddy2001@gmail.com} \
+  \faGlobeAmericas\ Hyderabad, India
+}
+
+\address{\
+  \faLinkedin\ \href{https://linkedin.com/in/sekharreddy2248}{linkedin.com/in/sekharreddy2248} \
+  \faGithub\ \href{https://github.com/MChandrashekarReddy}{github.com/MChandrashekarReddy} \
+  \faLink\ \href{https://mchandrashekarreddy.github.io/portfolio/}{Portfolio} \
+  \faMedium\ \href{https://medium.com/@mukkuchandrasekharreddy2001}{Medium}
+}
+
+\begin{document}
+
+%-----------------------------------------------------------------------------------------------------------------------------------------
+%                   PROFESSIONAL SUMMARY
+%-----------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{rSection}{PROFESSIONAL SUMMARY}
+Full Stack Developer with 2+ years of experience building and shipping AI-powered production web applications for fintech, legal, and strategy platforms. Develop backend services in Python (FastAPI, Flask) and .NET, and frontend applications in React, Next.js, Angular, and TypeScript, backed by PostgreSQL and SQL Server. Deploy and operate applications on AWS (ECS, API Gateway, ALB) and Azure, managing infrastructure with Terraform, CI/CD pipelines, and production monitoring. Build AI features with LangChain and LangGraph, switching between local (Ollama) and cloud LLMs like OpenAI.
+\end{rSection}
+
+%-----------------------------------------------------------------------------------------------------------------------------------------
+%                   TECHNICAL SKILLS
+%-----------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{rSection}{TECHNICAL SKILLS}
+\begin{tabular}{ @{} >{\bfseries}l @{\hspace{6ex}} p{0.75\textwidth} }
+Languages & Python, Java, C\# (.NET), TypeScript, JavaScript, SQL \\
+Front-End & React, Next.js, Angular, Redux, Zustand, Tailwind CSS, Bootstrap, HTML5, CSS3 \\
+Back-End & FastAPI, Flask, .NET, REST APIs \\
+Databases & PostgreSQL, MySQL, SQL Server \\
+Cloud & AWS -- ECS, ECR, EC2, S3, Lambda, RDS, API Gateway, VPC, ALB, CloudFront, IAM, Cognito, Secrets Manager, SNS, Textract, CloudWatch, etc. \newline Azure -- App Service, Azure Functions, Key Vault, Blob Storage, Queue Storage, Service Bus, VNet, Azure AD, Azure SQL, Application Insights, Azure DevOps, etc. \\
+DevOps & Terraform, Docker, Kubernetes, Jenkins, GitHub Actions, CI/CD, Linux \\
+AI & LangChain, LangGraph, RAG, Embeddings, Ollama, LLaMA, Hugging Face \\
+Testing \& Tools & Selenium, Playwright, TestNG, Manual Testing, Postman, Git, GitHub, Figma \\
+\end{tabular}
+\end{rSection}
+
+%-----------------------------------------------------------------------------------------------------------------------------------------
+%                   WORK EXPERIENCE
+%-----------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{rSection}{WORK EXPERIENCE}
+
+\textbf{Associate Engineer} \hfill Dec 2024 - Present\\
+\href{https://yottaflex.ai/}{YottaFlex AI Technologies Inc}, Hyderabad
+\begin{itemize}
+    \itemsep -3pt {}
+    \item Deliver full stack features end to end across multiple client-facing platforms, designing REST APIs in FastAPI and Flask and building responsive frontend modules in React and Angular with Tailwind CSS.
+    \item Build B2B integrations in .NET, connecting the platform with partner systems and third-party services through secure REST APIs for automated data exchange.
+    \item Design database schemas and optimize queries in PostgreSQL and SQL Server for multi-tenant applications with role-based access control.
+    \item Own features from stakeholder requirement discussions through design, development, code review, testing, and production release.
+    \item Provision and manage AWS infrastructure as code with Terraform: ECS services behind an internal ALB, exposed securely through API Gateway with VPC Link, along with IAM policies, CI/CD pipelines, and CloudWatch monitoring.
+    \item Integrated a third-party SaaS e-signature platform for digital document signing, implementing secure webhooks to track signature events and automate document status updates.
+\end{itemize}
+
+\textbf{Junior Engineer} \hfill Jul 2024 - Dec 2024\\
+\href{https://yottaflex.ai/}{YottaFlex AI Technologies Inc}, Hyderabad
+\begin{itemize}
+    \itemsep -3pt {}
+    \item Developed backend services and REST APIs in Python with Flask across multiple client projects.
+    \item Translated Figma designs into reusable, responsive screens and components in React, Angular, and TypeScript.
+    \item Owned schema changes, migrations, and query tuning on PostgreSQL and MySQL databases.
+    \item Deployed services to AWS and built automated regression suites with Selenium and TestNG, cutting manual testing effort for every release.
+\end{itemize}
+
+\end{rSection}
+
+%-----------------------------------------------------------------------------------------------------------------------------------------
+%                   PROJECTS
+%-----------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{rSection}{PROJECTS}
+
+\textbf{\href{https://equivesto-issuercrm-webapp-dev.azurewebsites.net/}{Equivesto}} | Full Stack Developer \& Infrastructure \hfill \textit{Angular, .NET, SQL Server, Azure, Zoho}
+\begin{itemize}
+    \itemsep -3pt {}
+    \item Investor management and onboarding platform with KYC/AML compliance: identity verification, watchlist and PEP screening, and portfolio tracking.
+    \item Built the end-to-end transaction flow and investment limits management in Angular and .NET, with limits dynamically customizable per investor type and offering.
+    \item Built external client integrations with the Zoho SaaS suite, exchanging data between the platform and client systems through secure REST APIs.
+    \item Integrated Zoho Sign for digital document signing, implementing secure webhooks for signature-event tracking and automated document status updates.
+    \item Managed the Azure infrastructure: App Service deployments, Azure SQL, Key Vault for secrets, Blob and Queue Storage, and monitoring with Application Insights.
+\end{itemize}
+
+\textbf{\href{https://www.luminoinsight.com/}{Lumino}} | Full Stack Developer \& Infrastructure \hfill \textit{Python, FastAPI, React, AWS, Terraform, Textract, OpenAI}
+\begin{itemize}
+    \itemsep -3pt {}
+    \item Strategy platform for nonprofit and for-profit organizations covering market intelligence, strategic planning, and change management; built the FastAPI backend and React frontend end to end.
+    \item Built a PDF data extraction pipeline with AWS Textract to process US public tax filings, cleaning and normalizing the extracted data into a relational database that feeds the application.
+    \item Developed an AI strategic planning feature powered by OpenAI: collects organizational inputs such as departments and priorities, breaks the organization's ambitions into phases and milestones with goals, and manages projects and project goals under each phase with progress tracking and AI-generated insights.
+    \item Designed the application to be fully customizable from reusable building blocks, letting screens and workflows be tailored per organization.
+    \item Built the complete AWS infrastructure with Terraform: ECS, ECR, ALB, API Gateway, RDS, S3, Cognito, Secrets Manager, and CloudWatch alarms.
+    \item Structured Terraform into a module-based architecture, with remote state stored in S3 and state locking to prevent conflicts between concurrent developer runs.
+\end{itemize}
+
+\textbf{\href{https://aeonlegaltech.com/}{Aeon}} | Full Stack Developer \& Testing \hfill \textit{React, Python, Flask, PostgreSQL, RAG, AWS}
+\begin{itemize}
+    \itemsep -3pt {}
+    \item Multi-tenant loan case management platform used by banks; built role-based workflows for 4 user types (admins, attorneys, processors, reviewers) with a React frontend and Flask REST APIs on PostgreSQL.
+    \item Automated credit memo processing with OCR and AI data extraction, and built an embeddings-based assistant that lets users search across case documents.
+    \item Built React screens and reusable components from Figma designs, along with the corresponding Flask REST endpoints.
+    \item Handled bug fixes, schema changes, and query tuning across case management modules, taking features from development through testing to release.
+    \item Implemented the project's automated testing framework from scratch with Selenium and TestNG, covering regression suites for critical user flows in every release.
+\end{itemize}
+
+\end{rSection}
+
+%-----------------------------------------------------------------------------------------------------------------------------------------
+%                   AI AGENTS
+%-----------------------------------------------------------------------------------------------------------------------------------------
+
+% \begin{rSection}{AI AGENTS}
+%
+% \textbf{Agent Finance System} \hfill \textit{Python, FastAPI, LangGraph, PostgreSQL, Ollama}
+% \begin{itemize}
+%     \itemsep -3pt {}
+%     \item Transaction anomaly detection agent built on a 5-node LangGraph pipeline with a FastAPI API, PostgreSQL state storage, and switchable Ollama/OpenAI model providers.
+% \end{itemize}
+%
+% \textbf{Smart Product Purchase Advisor} \hfill \textit{Python, FastAPI, LangGraph, LangChain, Playwright}
+% \begin{itemize}
+%     \itemsep -3pt {}
+%     \item Shopping agent that scrapes 8 e-commerce sites in parallel with Playwright and ranks deals by price, shipping, seller rating, and coupons, with price history tracking.
+% \end{itemize}
+%
+% \end{rSection}
+
+%-----------------------------------------------------------------------------------------------------------------------------------------
+%                   TECHNICAL ARTICLES
+%-----------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{rSection}{TECHNICAL ARTICLES}
+Published on \href{https://medium.com/@mukkuchandrasekharreddy2001}{Medium}, based on problems solved at work:
+\begin{itemize}
+    \itemsep -3pt {}
+    \item \href{https://medium.com/@mukkuchandrasekharreddy2001/securely-exposing-private-ecs-services-using-api-gateway-vpc-link-and-an-internal-alb-865fe9fcf3e6}{Securely Exposing Private ECS Services Using API Gateway, VPC Link, and an Internal ALB}
+    \item \href{https://medium.com/@mukkuchandrasekharreddy2001/ecs-container-health-checks-alb-vs-container-level-health-checks-de90a80c1f84}{ECS Container Health Checks: ALB vs Container-Level Health Checks}
+    \item \href{https://medium.com/@mukkuchandrasekharreddy2001/terraform-state-locking-explained-with-real-world-scenarios-from-dynamodb-to-lockfiles-and-force-99d3814d8c8b}{Terraform State Locking Explained with Real-World Scenarios}
+\end{itemize}
+\end{rSection}
+
+%-----------------------------------------------------------------------------------------------------------------------------------------
+%                   EDUCATION
+%-----------------------------------------------------------------------------------------------------------------------------------------
+
+% \begin{rSection}{EDUCATION}
+% {\bf Java Full-Stack Development Training}, JSpiders \hfill {2023 - Jul 2024}\\
+% Core Java, Spring, Spring Boot, Spring MVC, Hibernate, SQL, JavaScript, Bootstrap
+
+% {\bf Bachelor of Technology}, R.V.R. \& J.C. College of Engineering \hfill {2019 - 2023}\\
+% CGPA: 8.55
+% \end{rSection}
+
+\end{document}
